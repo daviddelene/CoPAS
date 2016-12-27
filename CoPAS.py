@@ -2,7 +2,7 @@
 
 """
 NAME:
-  CoPAS.py
+  CoPAS.py <https://github.com/daviddelene/CoPAS>
 
 PURPOSE:
   To facilitate the installation, setup, and integration of open source
@@ -17,6 +17,7 @@ SYNTAX:
   <-s>  - Install source package in addition to binary package.
   ADPAA - Install the ADPAA package.
   ADTAE - Install the ADTAE package.
+  SODA  - Install the SODA package.
 
 EXAMPLE:
   CoPAS.py
@@ -31,6 +32,61 @@ MODIFICATIONS:
     Written.
   David Delene <delene@aero.und.edu> - 161226
     Added Cloning of ADTAE repository.
+
+REFERENCES:
+  Airborne Data Processing and Analysis (ADPAA)
+    AVAILABILITY
+      Repository - svn://svn.code.sf.net/p/adpaa
+    COPYRIGHT
+      GNU/GPL Version 3
+    PLATFORM (Operatoring Systems Tested On)
+      Redhat, Fedora, Ubuntu, Mint Linux (CPLOT/CPLOT2 - Windows)
+    LANGUAGES
+      IDL, Python 2, Perl, Bash, Csh, C, Fortran, Matlab, Scilab, Igor
+    STATUS (December 27, 2016)
+      3003 Commits, 12 Active Developers, 2 Administrator
+    SCOPE
+      Processes data from Science Engineering Associates (SEA) data
+      acquisition systems, many instruments supported but does not
+      process Optical Array Probe to produce size distributions.
+      Does visualization, analysis and file conversion.
+
+  Airborne Data Tesing and Evaluation (ADTAE)
+    AVAILABILITY
+      Repository - https://sourceforge.net/projects/adtae/
+    COPYRIGHT
+      GNU/GPL Version 3
+    PLATFORM (Operatoring Systems Tested On)
+      Redhat, Fedora, Ubuntu, Mint Linux and Windows
+    LANGUAGES
+      Python 2, but mostly just data files.
+    STATUS (December 27, 2016)
+      3 Commits, 12 Active Developers, 2 Administrator
+    SCOPE
+      The Airborne Data Testing and Evaluation (ADTAE)
+      project develops open source resources to test and
+      evaluate software used to process and analyse
+      measurements from scientific instrument deployed on
+      airborne platforms. Many of the resources are designed
+      to work with the Airborne Data Processing and Analysis
+      (ADPAA) software package (http://adpaa.sourceforge.net).
+
+  System for OAP Data Analsis (SODA)
+    AVAILABILITY
+      Repository - https://github.com/abansemer/soda
+    COPYRIGHT
+      BSD-3 License:
+        Free use, UCAR/NCAR retain copyright notice.  
+    PLATFORM (Operatoring Systems Tested On)
+      Linux and Windows, likely Macs
+    LANGUAGES
+      IDL (Bash Scripts)
+    STATUS (December 27, 2016)
+      +90,000 Lines, +1 Developer
+    SCOPE
+      GNU and script based analysis package for optical array
+      probe data that uses shattering correction and other options
+      to derive particle spectrum.
 
 COPYRIGHT:
   2016 David Delene
@@ -65,10 +121,12 @@ def help_message():
     print ('Syntax: CoPAS <ADPAA> <ADTAE>')
     print ('  ADPAA - Airborne Data Processing and Analysis Package')
     print ('  ADTAE - Airborne Data Testing and Evaluation Package')
+    print ('  SODA  - System for OAP Data Analysis Package')
 
 # Define default options for package installation.
 adpaa  = 0
 adtae  = 0
+soda   = 0
 source = 0
 
 # Check for help request.
@@ -78,11 +136,17 @@ for param in sys.argv:
         exit()
     if param.startswith('-s'):
         source = 1
-
-# If no parameter options, install all packages.
-if (len(sys.argv) < 3):
-    adpaa = 1
-    adtae = 1
+        # If no parameter options, install all packages.
+        if (len(sys.argv) < 3):
+            adpaa = 1
+            adtae = 1
+            soda  = 1
+    else:
+        # If no parameter options, install all packages.
+        if (len(sys.argv) < 2):
+            adpaa = 1
+            adtae = 1
+            soda  = 1
 
 # Check for list of packages to install.
 for param in sys.argv:
@@ -90,6 +154,8 @@ for param in sys.argv:
         adpaa = 1
     if (param == 'ADTAE'):
         adtae = 1
+    if (param == 'SODA'):
+        soda = 1
 
 class Progress(git.remote.RemoteProgress):
     def update(self, op_code, cur_count, max_count=None, message=''):
@@ -146,18 +212,29 @@ if (adpaa):
         client.checkout('svn://svn.code.sf.net/p/adpaa/code/trunk/src','src')
     print "Finished with ADPAA."
 
-
+### Airborne Data Testing and Evaluation (ADTAE) software package. ###
 if (adtae):
-    ### Airborne Data Testing and Evaluation (ADTAE) software package. ###
     # Create main ADTAE directory.
     print "Working on Airborne Data Testing and Evaluation (ADTAE) package."
     if not os.path.isdir("ADTAE"):
         os.mkdir('ADTAE')
-    print "  Cloning ADTAE repository."
-    repo = git.Repo.clone_from(
-        'git://git.code.sf.net/p/adtae/code',
-        'ADTAE',
-        progress=Progress())
+        print "  Cloning ADTAE repository."
+        repo = git.Repo.clone_from(
+            'git://git.code.sf.net/p/adtae/code',
+            'ADTAE',
+            progress=Progress())
     print ""
     print "Finished with ADTAE."
 
+### System for OAP Data Analysis (SODA) ###
+if (soda):
+    # Create main ADTAE directory.
+    print "System for OAP Data Analysis (SODA) package."
+    if not os.path.isdir("SODA"):
+        print "  Cloning SODA repository."
+        repo = git.Repo.clone_from(
+            'https://github.com/abansemer/soda2',
+            'SODA',
+            progress=Progress())
+        print ""
+    print "Finished with SODA."
