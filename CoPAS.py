@@ -210,6 +210,7 @@ if (adpaa):
         os.chdir('ADPAA')
         client = pysvn.Client()
         client.checkout('svn://svn.code.sf.net/p/adpaa/code/trunk/src','src')
+        os.chdir('..')
     print "Finished with ADPAA."
 
 ### Airborne Data Testing and Evaluation (ADTAE) software package. ###
@@ -223,6 +224,9 @@ if (adtae):
             'git://git.code.sf.net/p/adtae/code',
             'ADTAE',
             progress=Progress())
+    else:
+        # Don't know how to pull from existing repository.
+        print "  ADTAE directory exists."
     print ""
     print "Finished with ADTAE."
 
@@ -237,4 +241,7 @@ if (soda):
             'SODA',
             progress=Progress())
         print ""
+    else:
+        # Don't know how to pull from existing repository.
+        print "  SODA directory exists."
     print "Finished with SODA."
