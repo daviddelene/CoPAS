@@ -9,7 +9,7 @@ PURPOSE:
   software and packages related to cloud physics, in-situ airborne data.
 
 SYNTAX:
-  CoPAS.py <-h|-s> <ADPAA> <ADTAE>
+  CoPAS.py <-h|-s> <ADPAA> <ADTAE> <EGADS> <SAMAC> <SODA>
 
   If no parameter options, install all packages.
   
@@ -17,7 +17,10 @@ SYNTAX:
   <-s>  - Install source package in addition to binary package.
   ADPAA - Install the ADPAA package.
   ADTAE - Install the ADTAE package.
+  EGADS - install the EUFAR package.
+  SAMAC - Install the SAMAC package.
   SODA  - Install the SODA package.
+  UIOPS - Install the UIOPS package.
 
 EXAMPLE:
   CoPAS.py
@@ -32,9 +35,36 @@ MODIFICATIONS:
     Written.
   David Delene <delene@aero.und.edu> - 161226
     Added Cloning of ADTAE repository.
+  David Delene <delene@aero.und.edu> - 161227
+    Added Cloning of SODA repository.
+  David Delene <delene@aero.und.edu> - 170112
+    Added Cloning of EGADS, SAMAC, and UIOPS repository.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
+    ADMINISTRATORS
+      David Delene <delene@aero.und.edu> - Administrator
+      Andrea Neumann
+    CURRENT (2017/01/12) DEVELOPERS
+      Cocos, Noah
+      Ekness, Jamie
+      Gapp, Nicholas
+      Gupta, Siddhant
+      Hibert, Kurt
+      O'brien, Joseph
+      Starzec, Mariusz
+      Seyler, Scott
+      Sorenson, Blake
+      Wilson, Lance
+   Current (2017/01/12) MEMBERS
+      Bart, Nichole
+      Butland, Alex
+      Kruse, Christopher
+      Mitchell, Robert
+      Mulally, Daniel
+      Sever, Gokhan
+      Simelane, P.
+      Uhlmann, Timm
     AVAILABILITY
       Repository - svn://svn.code.sf.net/p/adpaa
     COPYRIGHT
@@ -51,7 +81,42 @@ REFERENCES:
       process Optical Array Probe to produce size distributions.
       Does visualization, analysis and file conversion.
 
+
+  EUFAR General Airborne Data-processing Software (EGADS)
+    DEVELOPERS
+      Freer, Matt 
+      Henry, Olivier
+    AVAILABILITY
+      Repository - https://github.com/eufarn7sp/egads-eufar
+    COPYRIGHT
+      New BSD License
+    PLATFORM (Operatoring Systems Tested On)
+      Linux, Mac and Windows
+    LANGUAGES
+      Python 2
+    STATUS
+      2 Active Developers
+    SCOPE
+      Toolbox and framework for processing Airborne Atmospheric Data.
+      Includes meta-data and units. All algorithms are thoroughly documented
+      in separate, referenceable PDF.
+
+
   Airborne Data Tesing and Evaluation (ADTAE)
+    ADMINISTRATORS
+      David Delene <delene@aero.und.edu> - Administrator
+      Andrea Neumann
+    CURRENT (2017/01/12) DEVELOPERS
+      Cocos, Noah
+      Ekness, Jamie
+      Gapp, Nicholas
+      Gupta, Siddhant
+      Hibert, Kurt
+      O'brien, Joseph
+      Starzec, Mariusz
+      Seyler, Scott
+      Sorenson, Blake
+      Wilson, Lance
     AVAILABILITY
       Repository - https://sourceforge.net/projects/adtae/
     COPYRIGHT
@@ -71,11 +136,32 @@ REFERENCES:
       to work with the Airborne Data Processing and Analysis
       (ADPAA) software package (http://adpaa.sourceforge.net).
 
+
+  Software for Airborne Measurements of Aerosol and Clouds (SAMAC)
+    DEVELOPERS
+      Gagne, Stephanie
+      MacDonald, Landan
+    AVAILABILITY
+      Repository - https://github.com/StephGagne/SAMAC
+    COPYRIGHT
+      GNU/GPL Version 3
+    PLATFORM (Operatoring Systems Tested On)
+      Linux, Mac, Windows
+    LANGUAGES
+      Python 2.7 (Matplotlib, Scipy, Numpy, Basemap, H5py, Xlrd)  
+    STATUS (December 27, 2016)
+      +13,000+ Lines, 2 Developer
+    SCOPE
+      Analysis Package for Calculating, Displaying and Storing Segments from
+      Processed Data Sets
+
   System for OAP Data Analsis (SODA)
+    DEVELOPERS
+      Bansemer, Aaron
     AVAILABILITY
       Repository - https://github.com/abansemer/soda
     COPYRIGHT
-      BSD-3 License:
+      BSD-3 License
         Free use, UCAR/NCAR retain copyright notice.  
     PLATFORM (Operatoring Systems Tested On)
       Linux and Windows, likely Macs
@@ -88,8 +174,26 @@ REFERENCES:
       probe data that uses shattering correction and other options
       to derive particle spectrum.
 
+
+  University of Illinois OAP Processing Software (UIOPS)
+    DEVELOPERS
+      Wei Wu
+    AVAILABILITY
+      Repository - https://github.com/weiwu5/UIOPS
+    COPYRIGHT
+      GNU GPL V3
+    PLATFORM (Operatoring Systems Tested On)
+      Linux Windows, Mac (CGAL modern image processing)
+    LANGUAGES
+      Matlab (C++ Image processing, Python, Bash/Csh)
+    STATUS (December 27, 2016)
+      1 Developer
+    SCOPE
+      Analysis package for optical array probe data.
+
+
 COPYRIGHT:
-  2016 David Delene
+  2016, 2017 David Delene
 
   This program is distributed under terms of the GNU General Public License
  
@@ -118,16 +222,24 @@ import tarfile
 import urllib2
 
 def help_message():
-    print ('Syntax: CoPAS <ADPAA> <ADTAE>')
-    print ('  ADPAA - Airborne Data Processing and Analysis Package')
-    print ('  ADTAE - Airborne Data Testing and Evaluation Package')
-    print ('  SODA  - System for OAP Data Analysis Package')
+    print ('Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <SODA> <UIOPS')
+    print ('  -h     Print help message.')
+    print ('  -s     Include "source" code along with binary installation.')
+    print ('  ADPAA  Process Airborne Data Processing and Analysis (ADPAA) package.')
+    print ('  ADTAE  Process Airborne Data Testing and Evaluation (ADTAE) package.')
+    print ('  EUFAR  Process EUFAR General Airborne Data-processing Software (EUFAR) package.')
+    print ('  SAMAC  Software for Airborne Measurements of Aerosol and Clouds (SAMAC) package.')
+    print ('  SODA   System for OAP Data Analysis (SODA) package.')
+    print ('  UIOPS  Process University of Illinois OAP Processing Software (UOIPS) package.')
 
 # Define default options for package installation.
 adpaa  = 0
 adtae  = 0
+eufar  = 0
+samac  = 0
 soda   = 0
 source = 0
+uiops  = 0
 
 # Check for help request.
 for param in sys.argv:
@@ -140,26 +252,51 @@ for param in sys.argv:
         if (len(sys.argv) < 3):
             adpaa = 1
             adtae = 1
+            eufar = 1
+            samac = 1
             soda  = 1
+            uiops = 1
     else:
         # If no parameter options, install all packages.
         if (len(sys.argv) < 2):
             adpaa = 1
             adtae = 1
+            eufar = 1
+            samac = 1
             soda  = 1
+            uiops = 1
 
 # Check for list of packages to install.
 for param in sys.argv:
     if (param == 'ADPAA'):
         adpaa = 1
+    if (param == 'adpaa'):
+        adpaa = 1
     if (param == 'ADTAE'):
         adtae = 1
+    if (param == 'adtae'):
+        adtae = 1
+    if (param == 'EUFAR'):
+        eufar = 1
+    if (param == 'eufar'):
+        eufar = 1
+    if (param == 'SAMAC'):
+        samac = 1
+    if (param == 'samac'):
+        samac = 1
     if (param == 'SODA'):
         soda = 1
+    if (param == 'soda'):
+        soda = 1
+    if (param == 'UIOPS'):
+        uiops = 1
+    if (param == 'uiops'):
+        uiops = 1
 
 class Progress(git.remote.RemoteProgress):
     def update(self, op_code, cur_count, max_count=None, message=''):
         print '{0}\r'.format(self._cur_line),
+
 
 ### Airborne Data Processing and Analysis (ADPAA) software package. ###
 if (adpaa):
@@ -213,6 +350,7 @@ if (adpaa):
         os.chdir('..')
     print "Finished with ADPAA."
 
+
 ### Airborne Data Testing and Evaluation (ADTAE) software package. ###
 if (adtae):
     # Create main ADTAE directory.
@@ -230,6 +368,42 @@ if (adtae):
     print ""
     print "Finished with ADTAE."
 
+
+### EUFAR General Airborne Data-processing Software (EUFAR). ###
+if (eufar):
+    # Create main EUFAR directory.
+    print "Working on EUFAR General Airborne Data-processing Software (EUFAR) package."
+    if not os.path.isdir("EUFAR"):
+        os.mkdir('EUFAR')
+        print "  Cloning EUFAR repository."
+        repo = git.Repo.clone_from(
+            'https://github.com/eufarn7sp/egads-eufar',
+            'EUFAR',
+            progress=Progress())
+    else:
+        # Don't know how to pull from existing repository.
+        print "  EUFAR directory exists."
+    print ""
+    print "Finished with EUFAR."
+
+
+### System for OAP Data Analysis (SODA) ###
+if (samac):
+    # Create main SAMAC directory.
+    print "Software for Airborne Measurements of Aerosol and Clouds."
+    if not os.path.isdir("SAMAC"):
+        print "  Cloning SAMAC repository."
+        repo = git.Repo.clone_from(
+            'https://github.com/StephGagne/SAMAC',
+            'SAMAC',
+            progress=Progress())
+        print ""
+    else:
+        # Don't know how to pull from existing repository.
+        print "  SAMAC directory exists."
+    print "Finished with SAMAC."
+
+
 ### System for OAP Data Analysis (SODA) ###
 if (soda):
     # Create main ADTAE directory.
@@ -245,3 +419,20 @@ if (soda):
         # Don't know how to pull from existing repository.
         print "  SODA directory exists."
     print "Finished with SODA."
+
+
+### Process University of Illinois OAP Processing Software (UOIPS) package ###
+if (uiops):
+    # Create main UOIPS directory.
+    print "UIOPS  Process University of Illinois OAP Processing Software (UOIPS) package."
+    if not os.path.isdir("UIOPS"):
+        print "  Cloning UIOPS repository."
+        repo = git.Repo.clone_from(
+            'https://github.com/weiwu5/UIOPS',
+            'UIOPS',
+            progress=Progress())
+        print ""
+    else:
+        # Don't know how to pull from existing repository.
+        print "  UIOPS directory exists."
+    print "Finished with UIOPS."
