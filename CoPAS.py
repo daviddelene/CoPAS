@@ -348,7 +348,7 @@ if (adpaa):
         client = pysvn.Client()
         client.checkout('svn://svn.code.sf.net/p/adpaa/code/trunk/src','src')
         os.chdir('..')
-    print "Finished with ADPAA."
+    print "  Finished with ADPAA."
 
 
 ### Airborne Data Testing and Evaluation (ADTAE) software package. ###
@@ -358,6 +358,9 @@ if (adtae):
     if not os.path.isdir("ADTAE"):
         os.mkdir('ADTAE')
         print "  Cloning ADTAE repository."
+        # Add in two space without return.
+        sys.stdout.write('  ')
+        sys.stdout.flush()
         repo = git.Repo.clone_from(
             'git://git.code.sf.net/p/adtae/code',
             'ADTAE',
@@ -366,7 +369,7 @@ if (adtae):
         # Don't know how to pull from existing repository.
         print "  ADTAE directory exists."
     print ""
-    print "Finished with ADTAE."
+    print "  Finished with ADTAE."
 
 
 ### EUFAR General Airborne Data-processing Software (EUFAR). ###
@@ -384,7 +387,7 @@ if (eufar):
         # Don't know how to pull from existing repository.
         print "  EUFAR directory exists."
     print ""
-    print "Finished with EUFAR."
+    print "  Finished with EUFAR."
 
 
 ### System for OAP Data Analysis (SODA) ###
@@ -401,7 +404,7 @@ if (samac):
     else:
         # Don't know how to pull from existing repository.
         print "  SAMAC directory exists."
-    print "Finished with SAMAC."
+    print "  Finished with SAMAC."
 
 
 ### System for OAP Data Analysis (SODA) ###
@@ -418,7 +421,7 @@ if (soda):
     else:
         # Don't know how to pull from existing repository.
         print "  SODA directory exists."
-    print "Finished with SODA."
+    print "  Finished with SODA."
 
 
 ### Process University of Illinois OAP Processing Software (UOIPS) package ###
@@ -435,4 +438,4 @@ if (uiops):
     else:
         # Don't know how to pull from existing repository.
         print "  UIOPS directory exists."
-    print "Finished with UIOPS."
+    print "  Finished with UIOPS."
