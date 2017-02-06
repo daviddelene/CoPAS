@@ -8,6 +8,9 @@ PURPOSE:
   To facilitate the installation, setup, and integration of open source
   software and packages related to cloud physics, in-situ airborne data.
 
+Download/Clone CoPAS distribution
+  git clone https://github.com/daviddelene/CoPAS.git
+
 SYNTAX:
   CoPAS.py <-h|-s> <ADPAA> <ADTAE> <EGADS> <SAMAC> <SODA>
 
@@ -23,6 +26,8 @@ SYNTAX:
   UIOPS - Install the UIOPS package.
 
 EXAMPLE:
+  cd $HOME
+  mkdir CoPAS_Packages
   CoPAS.py
 
 NOTES:
@@ -358,9 +363,6 @@ if (adtae):
     if not os.path.isdir("ADTAE"):
         os.mkdir('ADTAE')
         print "  Cloning ADTAE repository."
-        # Add in two space without return.
-        sys.stdout.write('  ')
-        sys.stdout.flush()
         repo = git.Repo.clone_from(
             'git://git.code.sf.net/p/adtae/code',
             'ADTAE',
@@ -396,6 +398,9 @@ if (samac):
     print "Software for Airborne Measurements of Aerosol and Clouds."
     if not os.path.isdir("SAMAC"):
         print "  Cloning SAMAC repository."
+        # Add in two space without return.
+        sys.stdout.write('  ')
+        sys.stdout.flush()
         repo = git.Repo.clone_from(
             'https://github.com/StephGagne/SAMAC',
             'SAMAC',
