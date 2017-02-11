@@ -8,8 +8,14 @@ PURPOSE:
   To facilitate the installation, setup, and integration of open source
   software and packages related to cloud physics, in-situ airborne data.
 
-Download/Clone CoPAS distribution
+Download/Clone CoPAS Distribution
+  cd $HOME
   git clone https://github.com/daviddelene/CoPAS.git
+
+EXECUTION EXAMPLE:
+  mkdir ${HOME}/CoPAS_Packages
+  cd ${HOME/CoPAS_Packages
+  ${HOME}/COPAS/CoPAS.py
 
 SYNTAX:
   CoPAS.py <-h|-s> <ADPAA> <ADTAE> <EGADS> <SAMAC> <SODA>
@@ -24,11 +30,6 @@ SYNTAX:
   SAMAC - Install the SAMAC package.
   SODA  - Install the SODA package.
   UIOPS - Install the UIOPS package.
-
-EXAMPLE:
-  cd $HOME
-  mkdir CoPAS_Packages
-  CoPAS.py
 
 NOTES:
   If available, script installs a binary distribution of the package.
@@ -87,26 +88,6 @@ REFERENCES:
       Does visualization, analysis and file conversion.
 
 
-  EUFAR General Airborne Data-processing Software (EGADS)
-    DEVELOPERS
-      Freer, Matt 
-      Henry, Olivier
-    AVAILABILITY
-      Repository - https://github.com/eufarn7sp/egads-eufar
-    COPYRIGHT
-      New BSD License
-    PLATFORM (Operatoring Systems Tested On)
-      Linux, Mac and Windows
-    LANGUAGES
-      Python 2
-    STATUS
-      2 Active Developers
-    SCOPE
-      Toolbox and framework for processing Airborne Atmospheric Data.
-      Includes meta-data and units. All algorithms are thoroughly documented
-      in separate, referenceable PDF.
-
-
   Airborne Data Tesing and Evaluation (ADTAE)
     ADMINISTRATORS
       David Delene <delene@aero.und.edu> - Administrator
@@ -140,6 +121,26 @@ REFERENCES:
       airborne platforms. Many of the resources are designed
       to work with the Airborne Data Processing and Analysis
       (ADPAA) software package (http://adpaa.sourceforge.net).
+
+
+  EUFAR General Airborne Data-processing Software (EGADS)
+    DEVELOPERS
+      Freer, Matt 
+      Henry, Olivier
+    AVAILABILITY
+      Repository - https://github.com/eufarn7sp/egads-eufar
+    COPYRIGHT
+      New BSD License
+    PLATFORM (Operatoring Systems Tested On)
+      Linux, Mac and Windows
+    LANGUAGES
+      Python 2
+    STATUS
+      2 Active Developers
+    SCOPE
+      Toolbox and framework for processing Airborne Atmospheric Data.
+      Includes meta-data and units. All algorithms are thoroughly documented
+      in separate, referenceable PDF.
 
 
   Software for Airborne Measurements of Aerosol and Clouds (SAMAC)
