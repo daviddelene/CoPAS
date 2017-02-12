@@ -18,7 +18,7 @@ EXECUTION EXAMPLE:
   ${HOME}/COPAS/CoPAS.py
 
 SYNTAX:
-  CoPAS.py <-h|-s> <ADPAA> <ADTAE> <EGADS> <SAMAC> <SODA>
+  CoPAS.py <-h|-s> <ADPAA> <ADTAE> <EGADS> <SAMAC> <SODA> <UIOPS> <nobinary> <notesting>
 
   If no parameter options, install all packages.
   
@@ -30,6 +30,8 @@ SYNTAX:
   SAMAC - Install the SAMAC package.
   SODA  - Install the SODA package.
   UIOPS - Install the UIOPS package.
+  <nobinary>  - Do not install binary packages.
+  <notesting> - Do not test for support packages.
 
 NOTES:
   If available, script installs a binary distribution of the package.
@@ -45,6 +47,8 @@ MODIFICATIONS:
     Added Cloning of SODA repository.
   David Delene <delene@aero.und.edu> - 170112
     Added Cloning of EGADS, SAMAC, and UIOPS repository.
+  David Delene <delene@aero.und.edu> - 170210
+    Added nobinary and notesting options.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -242,6 +246,7 @@ except ImportError, e:
     print "The python 'os' module does not exists."
     print "Please install (see suggestion below) and execute again."
     print "  Fedora - sudo dnf install pysvn"
+    print "  Ubuntu - sudo apt install python-svn"
     quit()
 try:
     import sys
@@ -265,24 +270,28 @@ except ImportError, e:
     quit()
 
 def help_message():
-    print ('Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <SODA> <UIOPS')
-    print ('  -h     Print help message.')
-    print ('  -s     Include "source" code along with binary installation.')
-    print ('  ADPAA  Process Airborne Data Processing and Analysis (ADPAA) package.')
-    print ('  ADTAE  Process Airborne Data Testing and Evaluation (ADTAE) package.')
-    print ('  EUFAR  Process EUFAR General Airborne Data-processing Software (EUFAR) package.')
-    print ('  SAMAC  Software for Airborne Measurements of Aerosol and Clouds (SAMAC) package.')
-    print ('  SODA   System for OAP Data Analysis (SODA) package.')
-    print ('  UIOPS  Process University of Illinois OAP Processing Software (UOIPS) package.')
+    print ('Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <SODA> <UIOPS> <nobinary> <notesting>')
+    print ('  -h        Print help message.')
+    print ('  -s        Include "source" code along with binary installation.')
+    print ('  ADPAA     Process Airborne Data Processing and Analysis (ADPAA) package.')
+    print ('  ADTAE     Process Airborne Data Testing and Evaluation (ADTAE) package.')
+    print ('  EUFAR     Process EUFAR General Airborne Data-processing Software (EUFAR) package.')
+    print ('  SAMAC     Software for Airborne Measurements of Aerosol and Clouds (SAMAC) package.')
+    print ('  SODA      System for OAP Data Analysis (SODA) package.')
+    print ('  UIOPS     Process University of Illinois OAP Processing Software (UOIPS) package.')
+    print ('  nobinary  Do not install binary packages.')
+    print ('  notesting Do not test for support packages.')
 
 # Define default options for package installation.
-adpaa  = 0
-adtae  = 0
-eufar  = 0
-samac  = 0
-soda   = 0
-source = 0
-uiops  = 0
+adpaa   = 0
+adtae   = 0
+binary  = 1
+eufar   = 0
+samac   = 0
+soda    = 0
+source  = 0
+testing = 1
+uiops   = 0
 
 # Check for help request.
 for param in sys.argv:
@@ -336,6 +345,13 @@ for param in sys.argv:
     if (param == 'uiops'):
         uiops = 1
 
+# Check for list of long name options.
+for param in sys.argv:
+    if (param == 'nobinary'):
+        binary = 0
+    if (param == 'notesting'):
+        testing = 0
+
 class Progress(git.remote.RemoteProgress):
     def update(self, op_code, cur_count, max_count=None, message=''):
         print '{0}\r'.format(self._cur_line),
@@ -345,52 +361,78 @@ class Progress(git.remote.RemoteProgress):
 if (adpaa):
     # Create directories.
     print "Working on Airborne Data Processing and Analysis (ADPAA) package."
-    if not os.path.isdir("ADPAA"):
-        os.mkdir('ADPAA')
-    os.chdir('ADPAA')
-    if not os.path.isdir("binary_distributions"):
-        os.mkdir('binary_distributions')
-    os.chdir('binary_distributions')
+    if (binary):
+        print "  Downloading binary version of ADPAA."
+        if not os.path.isdir("ADPAA"):
+            os.mkdir('ADPAA')
+        os.chdir('ADPAA')
+        if not os.path.isdir("binary_distributions"):
+            os.mkdir('binary_distributions')
+        os.chdir('binary_distributions')
 
-    # Download tar file of binary package using progress bar.
-    url = "https://sourceforge.net/projects/adpaa/files/ADPAA.tar.gz"
-    file_name = url.split('/')[-1]
-    u = urllib2.urlopen(url)
-    f = open(file_name, 'wb')
-    meta = u.info()
-    file_size = int(meta.getheaders("Content-Length")[0])
-    print "  Downloading ADPAA Binary Version: %s Bytes: %s" % (file_name, file_size)
+        # Download tar file of binary package using progress bar.
+        url = "https://sourceforge.net/projects/adpaa/files/ADPAA.tar.gz"
+        file_name = url.split('/')[-1]
+        u = urllib2.urlopen(url)
+        f = open(file_name, 'wb')
+        meta = u.info()
+        file_size = int(meta.getheaders("Content-Length")[0])
+        print "  Downloading ADPAA Binary Version: %s Bytes: %s" % (file_name, file_size)
 
-    file_size_dl = 0
-    block_sz = 8192
-    while True:
-        buffer = u.read(block_sz)
-        if not buffer:
-            break
+        file_size_dl = 0
+        block_sz = 8192
+        while True:
+            buffer = u.read(block_sz)
+            if not buffer:
+                break
 
-        file_size_dl += len(buffer)
-        f.write(buffer)
-        status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
-        status = status + chr(8)*(len(status)+1)
-        print status,
+            file_size_dl += len(buffer)
+            f.write(buffer)
+            status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
+            status = status + chr(8)*(len(status)+1)
+            print status,
 
-    f.close()
+        f.close()
 
-    # Extract distribution from compressed tar file.
-    print " Extracting ADPAA distribution from compressed tar file."
-    tar = tarfile.open('ADPAA.tar.gz', "r:gz")
-    tar.extractall("..")
-    tar.close()
+        # Extract distribution from compressed tar file.
+        print " Extracting ADPAA distribution from compressed tar file."
+        tar = tarfile.open('ADPAA.tar.gz', "r:gz")
+        tar.extractall("..")
+        tar.close()
 
-    # Go back to base directory.
-    os.chdir('../..')
+        # Go back to base directory.
+        os.chdir('../..')
 
     if (source):
         print "  Cloning ADPAA source code from repository."
+        if not os.path.isdir("ADPAA"):
+            os.mkdir('ADPAA')
         os.chdir('ADPAA')
         client = pysvn.Client()
         client.checkout('svn://svn.code.sf.net/p/adpaa/code/trunk/src','src')
         os.chdir('..')
+    if (testing):
+        print "  Tesing for ADPAA support packages."
+        try:
+            import csv 
+        except ImportError, e:
+            print "  Required python 'csv' module is not installed."
+            quit()
+        try:
+            import numpy 
+        except ImportError, e:
+            print "  Required python 'numpy' module is not installed."
+            quit()
+        try:
+            import math
+        except ImportError, e:
+            print "  Required python 'math' module is not installed."
+            quit()
+        try:
+            import sys
+        except ImportError, e:
+            print "  Required python 'sys' module is not installed."
+            quit()
     print "  Finished with ADPAA."
 
 
