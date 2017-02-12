@@ -222,15 +222,47 @@ COPYRIGHT:
 
 # Import package with existing checking.
 try:
-  import git
+    import git
 except ImportError, e:
-  print "git module does not exists"
-  quit()
-import os
-import pysvn
-import sys
-import tarfile
-import urllib2
+    print "The python 'git' module does not exists."
+    print "Please install (see suggestion below) and execute again."
+    print "  Fedora - sudo dnf install python2-GitPython"
+    print "  Ubuntu - sudo apt install python-git"
+    quit()
+try:
+    import os
+except ImportError, e:
+    print "The python 'os' module does not exists."
+    print "Please install (see suggestion below) and execute again."
+    print "  Fedora - sudo dnf install python-libs"
+    quit()
+try:
+    import pysvn
+except ImportError, e:
+    print "The python 'os' module does not exists."
+    print "Please install (see suggestion below) and execute again."
+    print "  Fedora - sudo dnf install pysvn"
+    quit()
+try:
+    import sys
+except ImportError, e:
+    print "The python 'os' module does not exists."
+    print "Please install (see suggestion below) and execute again."
+    quit()
+try:
+    import tarfile
+except ImportError, e:
+    print "The python 'os' module does not exists."
+    print "Please install (see suggestion below) and execute again."
+    print "  Fedora - sudo dnf install python-libs"
+    quit()
+try:
+    import urllib2
+except ImportError, e:
+    print "The python 'os' module does not exists."
+    print "Please install (see suggestion below) and execute again."
+    print "  Fedora - sudo dnf install python-libs"
+    quit()
 
 def help_message():
     print ('Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <SODA> <UIOPS')
