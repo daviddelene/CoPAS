@@ -220,7 +220,12 @@ COPYRIGHT:
 
 """
 
-import git
+# Import package with existing checking.
+try:
+  import git
+except ImportError, e:
+  print "git module does not exists"
+  quit()
 import os
 import pysvn
 import sys
