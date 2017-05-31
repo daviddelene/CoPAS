@@ -225,49 +225,75 @@ COPYRIGHT:
 """
 
 # Import package with existing checking.
+import imp
 try:
-    import git
+    imp.find_module('git')
 except ImportError, e:
     print "The python 'git' module does not exists."
     print "Please install (see suggestion below) and execute again."
     print "  Fedora - sudo dnf install python2-GitPython"
     print "  Ubuntu - sudo apt install python-git"
-    quit()
+    pass
+else:
+    import git
+    print "The git module imported."
+
 try:
+    imp.find_module('os')
     import os
 except ImportError, e:
     print "The python 'os' module does not exists."
     print "Please install (see suggestion below) and execute again."
     print "  Fedora - sudo dnf install python-libs"
-    quit()
+    pass
+else:
+    import os
+    print "The os module imported."
+
 try:
+    imp.find_module('pysvn')
     import pysvn
 except ImportError, e:
     print "The python 'os' module does not exists."
     print "Please install (see suggestion below) and execute again."
     print "  Fedora - sudo dnf install pysvn"
     print "  Ubuntu - sudo apt install python-svn"
-    quit()
+    pass
+else:
+    import pysvn
+    print "The pysvn mdule imported."
+
 try:
-    import sys
+    imp.find_module('sys')
 except ImportError, e:
-    print "The python 'os' module does not exists."
+    print "The python 'sys' module does not exists."
     print "Please install (see suggestion below) and execute again."
-    quit()
+    pass
+else:
+    import sys 
+    print "The sys mdule imported."
+
 try:
     import tarfile
 except ImportError, e:
-    print "The python 'os' module does not exists."
+    print "The python 'tarfile' module does not exists."
     print "Please install (see suggestion below) and execute again."
     print "  Fedora - sudo dnf install python-libs"
-    quit()
+    pass
+else:
+    import tarfile
+    print "The tarfile mdule imported."
+
 try:
     import urllib2
 except ImportError, e:
-    print "The python 'os' module does not exists."
+    print "The python 'urllib2' module does not exists."
     print "Please install (see suggestion below) and execute again."
     print "  Fedora - sudo dnf install python-libs"
-    quit()
+    pass
+else:
+    import urllib2
+    print "The urllib2 mdule imported."
 
 def help_message():
     print ('Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <SODA> <UIOPS> <nobinary> <notesting>')
