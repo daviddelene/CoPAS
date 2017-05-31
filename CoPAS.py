@@ -254,7 +254,7 @@ try:
     imp.find_module('pysvn')
     import pysvn
 except ImportError, e:
-    print "The python 'os' module does not exists."
+    print "The python 'pysvn' module does not exists."
     print "Please install (see suggestion below) and execute again."
     print "  Fedora - sudo dnf install pysvn"
     print "  Ubuntu - sudo apt install python-svn"
