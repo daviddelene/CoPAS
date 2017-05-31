@@ -3,8 +3,13 @@ Community Packages for Airborne Science (CoPAS) is a Github project designed to
 facilitate the installation, setup, and integration of open source software and
 packages related to cloud physics, in-situ airborne data.
 
-Download/Clone CoPAS Distribution
+Download/Clone CoPAS Distribution into in your Home directory (${HOME}).
   git clone https://github.com/daviddelene/CoPAS.git
+
+Download Packages.
+  mkdir ${HOME}/CoPAS_Packages
+  cd ${HOME}/CoPAS_Packages
+  ${HOME}/CoPAS/CoPAS.py
 
 Projects Supported:
   Airborne Data Processing and Analysis (ADPAA)
