@@ -6,10 +6,14 @@ packages related to cloud physics, in-situ airborne data.
 Download/Clone CoPAS Distribution into in your Home directory (${HOME}).
   git clone https://github.com/daviddelene/CoPAS.git
 
-Download Packages.
+Download Packages:
   mkdir ${HOME}/CoPAS_Packages
   cd ${HOME}/CoPAS_Packages
   ${HOME}/CoPAS/CoPAS.py
+
+Update Package:
+  git commit file
+  git push origin master
 
 Projects Supported:
   Airborne Data Processing and Analysis (ADPAA)
@@ -21,4 +25,4 @@ Projects Supported:
   System for OAP Data Analsis (SODA)
     https://github.com/abansemer/soda
   University of Illinois OAP Processing Software (UIOPS)
-    https://github.com/weiwu5/UIOPS
+    https://github.com/joefinlon/UIOPS
