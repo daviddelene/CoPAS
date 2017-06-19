@@ -33,6 +33,10 @@ SYNTAX:
   <nobinary>  - Do not install binary packages.
   <notesting> - Do not test for support packages.
 
+DEVELOPERS:
+  Nick Gapp (njgapp) <nicholas.james.gapp@ndus.edu>
+  Joseph Finlon (joefinlon) <finlon2@illinois.edu>
+
 NOTES:
   If available, script installs a binary distribution of the package.
   If no binary distribution is available, then a copy of the package repository
@@ -187,9 +191,15 @@ REFERENCES:
 
   University of Illinois OAP Processing Software (UIOPS)
     DEVELOPERS
-      Wei Wu
+      Current Developer: 
+        Joseph A Finlong (finlon2@illinois.edu)
+      Past Developer
+        Wei Wu
     AVAILABILITY
-      Repository - https://github.com/weiwu5/UIOPS
+      Curent Version
+        Repository - https://github.com/joefinlon/UIOPS
+      Past Version
+        Repository - https://github.com/weiwu5/UIOPS
     COPYRIGHT
       GNU GPL V3
     PLATFORM (Operatoring Systems Tested On)
@@ -542,7 +552,7 @@ if (uiops):
     if not os.path.isdir("UIOPS"):
         print "  Cloning UIOPS repository."
         repo = git.Repo.clone_from(
-            'https://github.com/weiwu5/UIOPS',
+            'https://github.com/joefinlon/UIOPS',
             'UIOPS',
             progress=Progress())
         print ""
