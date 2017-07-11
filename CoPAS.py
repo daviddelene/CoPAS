@@ -53,6 +53,8 @@ MODIFICATIONS:
     Added Cloning of EGADS, SAMAC, and UIOPS repository.
   David Delene <delene@aero.und.edu> - 170210
     Added nobinary and notesting options.
+  David Delene <delene@aero.und.edu> - 170709
+    Added information about Redhat install.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -241,6 +243,7 @@ try:
 except ImportError, e:
     print "The python 'git' module does not exists."
     print "Please install (see suggestion below) and execute again."
+    print "  Redhat - sudo yum install GitPython"
     print "  Fedora - sudo dnf install python2-GitPython"
     print "  Ubuntu - sudo apt install python-git"
     pass
@@ -254,6 +257,7 @@ try:
 except ImportError, e:
     print "The python 'os' module does not exists."
     print "Please install (see suggestion below) and execute again."
+    print "  Redaht - sudo yum install python-libs"
     print "  Fedora - sudo dnf install python-libs"
     pass
 else:
@@ -266,6 +270,7 @@ try:
 except ImportError, e:
     print "The python 'pysvn' module does not exists."
     print "Please install (see suggestion below) and execute again."
+    print "  Redhat - sudo yum install pysvn"
     print "  Fedora - sudo dnf install pysvn"
     print "  Ubuntu - sudo apt install python-svn"
     pass
@@ -288,6 +293,7 @@ try:
 except ImportError, e:
     print "The python 'tarfile' module does not exists."
     print "Please install (see suggestion below) and execute again."
+    print "  Redhat - sudo yum install python-libs"
     print "  Fedora - sudo dnf install python-libs"
     pass
 else:
@@ -299,6 +305,7 @@ try:
 except ImportError, e:
     print "The python 'urllib2' module does not exists."
     print "Please install (see suggestion below) and execute again."
+    print "  Redhat - sudo yum install python-libs"
     print "  Fedora - sudo dnf install python-libs"
     pass
 else:
