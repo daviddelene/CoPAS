@@ -5,8 +5,7 @@ packages related to cloud physics, in-situ airborne data.
 
 Download/Clone CoPAS Distribution
 ---------------------------------
-- mkdir ${HOME}/CoPAS
-- cd ${HOME}/CoPAS
+- cd ${HOME}
 - git clone https://github.com/daviddelene/CoPAS.git
 
 Download Packages:
