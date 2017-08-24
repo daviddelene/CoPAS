@@ -321,7 +321,7 @@ except ImportError, e:
     pass
 else:
     import unittest2
-    print "The urllib2 mdule imported."
+    print "The unittest2 mdule imported."
 
 def help_message():
     print ('Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <SODA> <UIOPS> <nobinary> <notesting>')
