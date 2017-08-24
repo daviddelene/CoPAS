@@ -312,6 +312,17 @@ else:
     import urllib2
     print "The urllib2 mdule imported."
 
+try:
+    import unittest2
+except ImportError, e:
+    print "The python 'unittest2' module does not exists."
+    print "Please install (see suggestion below) and execute again."
+    print "  Fedora - sudo dnf install python2-unittest2
+    pass
+else:
+    import unittest2
+    print "The urllib2 mdule imported."
+
 def help_message():
     print ('Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <SODA> <UIOPS> <nobinary> <notesting>')
     print ('  -h        Print help message.')
