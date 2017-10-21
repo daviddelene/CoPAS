@@ -318,6 +318,7 @@ except ImportError, e:
     print "The python 'unittest2' module does not exists."
     print "Please install (see suggestion below) and execute again."
     print "  Fedora - sudo dnf install python2-unittest2"
+    print "  Ubuntu - sudo apt install python-unittest2"
     pass
 else:
     import unittest2
