@@ -43,18 +43,20 @@ NOTES:
   is installed.
 
 MODIFICATIONS:
-  David Delene <delene@aero.und.edu> - 161224
+  David Delene <delene@aero.und.edu> - 2016/12/24
     Written.
-  David Delene <delene@aero.und.edu> - 161226
+  David Delene <delene@aero.und.edu> - 2016/12/26
     Added Cloning of ADTAE repository.
-  David Delene <delene@aero.und.edu> - 161227
+  David Delene <delene@aero.und.edu> - 2016/12/27
     Added Cloning of SODA repository.
-  David Delene <delene@aero.und.edu> - 170112
+  David Delene <delene@aero.und.edu> - 2017/01/12
     Added Cloning of EGADS, SAMAC, and UIOPS repository.
-  David Delene <delene@aero.und.edu> - 170210
+  David Delene <delene@aero.und.edu> - 2017/02/10
     Added nobinary and notesting options.
-  David Delene <delene@aero.und.edu> - 170709
+  David Delene <delene@aero.und.edu> - 2017/07/09
     Added information about Redhat install.
+  David Delene <delene@aero.und.edu> - 2017/10/30
+    Added AOSPY packae.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -131,6 +133,12 @@ REFERENCES:
       airborne platforms. Many of the resources are designed
       to work with the Airborne Data Processing and Analysis
       (ADPAA) software package (http://adpaa.sourceforge.net).
+
+  Automated Climate Data Analysis and Management (AOSPY)
+    AVAILABILITY
+      PIP - pip install aospy
+    LANGUAGES
+      Works on Python 2.7, 3.4, 3.5, and 3.6.
 
 
   EUFAR General Airborne Data-processing Software (EGADS)
@@ -340,6 +348,7 @@ def help_message():
 # Define default options for package installation.
 adpaa   = 0
 adtae   = 0
+aospy   = 0
 binary  = 1
 eufar   = 0
 samac   = 0
@@ -383,6 +392,10 @@ for param in sys.argv:
         adtae = 1
     if (param == 'adtae'):
         adtae = 1
+    if (param == 'AOSPY'):
+        aospy = 1
+    if (param == 'aospy'):
+        aospy = 1
     if (param == 'EUFAR'):
         eufar = 1
     if (param == 'eufar'):
@@ -507,6 +520,22 @@ if (adtae):
         print "  ADTAE directory exists."
     print ""
     print "  Finished with ADTAE."
+
+
+### EUFAR General Airborne Data-processing Software (EUFAR). ###
+if (aospy):
+    try:
+        import pip
+    except ImportError, e:
+        print "The python 'pip' module does not exists."
+        print "Please install (see suggestion below) and execute again."
+        pass
+    else:
+        import pip
+        def install(package):
+            pip.main(['install', package])
+        if __name__ == '__main__':
+            install('aospy')
 
 
 ### EUFAR General Airborne Data-processing Software (EUFAR). ###
