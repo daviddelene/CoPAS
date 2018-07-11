@@ -12,6 +12,10 @@ Download/Clone CoPAS Distribution
   cd $HOME
   git clone https://github.com/daviddelene/CoPAS.git
 
+Update the CoPAS.py File
+  git commit CoPAS.py
+  git push origin master
+
 EXECUTION EXAMPLE:
   mkdir ${HOME}/CoPAS_Packages
   cd ${HOME/CoPAS_Packages
@@ -19,20 +23,20 @@ EXECUTION EXAMPLE:
 
 SYNTAX:
   CoPAS.py <-h|-s> <ADPAA> <ADTAE> <EGADS> <SAMAC> <SIMDATA> <SODA> <UIOPS> <nobinary> <notesting>
-
-  If no parameter options, install all packages.
-  
   <-h>    - Print Syntax message.
   <-s>    - Install source package in addition to binary package.
-  ADPAA   - Install the ADPAA package.
-  ADTAE   - Install the ADTAE package.
-  EGADS   - install the EUFAR package.
+  ADPAA     - Clone/pull the ADPAA SVN repository.
+  ADTAE     - Clone/pull the ADTAE Git repository.
+  DRILSDOWN - Clone/pull the DRILSDOWN repository.
+  EGADS     - install the EUFAR package.
   SAMAC   - Install the SAMAC package.
   SIMDATA - Download NCAR probe simulation data sets.
   SODA    - Install the SODA package.
   UIOPS   - Install the UIOPS package.
   <nobinary>  - Do not install binary packages.
   <notesting> - Do not test for support packages.
+
+  No parameter on command line then Clone/pull all repositories.
 
 DEVELOPERS:
   David Delene <delene@aero.und.edu>
@@ -48,7 +52,6 @@ NOTES:
     1.)  Tests to check for required python packages.
     2.)  Installing python packages.
     3.)  Cloning and update repositories.
-  
 
 MODIFICATIONS:
   David Delene <delene@aero.und.edu> - 2016/12/24
@@ -69,6 +72,8 @@ MODIFICATIONS:
     Added SIMDATA probe simulation data set.
   David Delene <delene@aero.und.edu> - 2018/07/08
     Added pull (updating) of git repositories.
+  David Delene <delene@aero.und.edu> - 2018/07/08
+    Added cloning of DRILSDOWN.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -146,11 +151,32 @@ REFERENCES:
       to work with the Airborne Data Processing and Analysis
       (ADPAA) software package (http://adpaa.sourceforge.net).
 
+
   Automated Climate Data Analysis and Management (AOSPY)
     AVAILABILITY
       PIP - pip install aospy
     LANGUAGES
       Works on Python 2.7, 3.4, 3.5, and 3.6.
+
+  Drawing Rich Integrated Lat-lon-time Subsets from Dataservers Online into Working Notebooks (DRILSDOWN)
+    ADMINISTRATORS
+      Brian Mapes, mapes@miami.edu
+    AVAILABILITY
+      Repository - https://github.com/Unidata/drilsdown.git
+    COPYRIGHT
+
+    PLATFORM (Operatoring Systems Tested On)
+      Fedora
+    LANGUAGES
+      Python
+    STATUS (December 27, 2016)
+      
+    SCOPE
+      The DRILSDOWN project facilitate access ro detailed
+      visualizations (in the Integrated Data Viewer, IDV) of
+      Cases of Interest (user-defined) within a Python-based geo-space x time
+      statistical data analyses -- if the data for such visulaizations are
+      available online in nice aggregated repositories.
 
 
   EUFAR General Airborne Data-processing Software (EGADS)
@@ -372,6 +398,7 @@ def help_message():
     print ('  ADPAA     Process Airborne Data Processing and Analysis (ADPAA) package.')
     print ('  ADTAE     Process Airborne Data Testing and Evaluation (ADTAE) package.')
     print ('  EUFAR     Process EUFAR General Airborne Data-processing Software (EUFAR) package.')
+    print ('  DRILSDOWN Process Drawing Rich Integrated Lat-lon-time Subsets from Dataservers Online into Working Notebooks (DRILSDOWN).')
     print ('  SAMAC     Software for Airborne Measurements of Aerosol and Clouds (SAMAC) package.')
     print ('  SIMDATA   Simulation probe data set.')
     print ('  SODA      System for OAP Data Analysis (SODA) package.')
@@ -380,17 +407,18 @@ def help_message():
     print ('  notesting Do not test for support packages.')
 
 # Define default options for package installation.
-adpaa   = 0
-adtae   = 0
-aospy   = 0
-binary  = 1
-eufar   = 0
-samac   = 0
-simdata = 0
-soda    = 0
-source  = 0
-testing = 1
-uiops   = 0
+adpaa     = 0
+adtae     = 0
+aospy     = 0
+binary    = 1
+drilsdown = 0
+eufar     = 0
+samac     = 0
+simdata   = 0
+soda      = 0
+source    = 0
+testing   = 1
+uiops     = 0
 
 # Check for help request.
 for param in sys.argv:
@@ -401,23 +429,25 @@ for param in sys.argv:
         source = 1
         # If no parameter options, install all packages.
         if (len(sys.argv) < 3):
-            adpaa   = 1
-            adtae   = 1
-            eufar   = 1
-            samac   = 1
-            simdata = 1
-            soda    = 1
-            uiops   = 1
+            adpaa     = 1
+            adtae     = 1
+            drilsdown = 1
+            eufar     = 1
+            samac     = 1
+            simdata   = 1
+            soda      = 1
+            uiops     = 1
     else:
         # If no parameter options, install all packages.
         if (len(sys.argv) < 2):
-            adpaa   = 1
-            adtae   = 1
-            eufar   = 1
-            samac   = 1
-            simdata = 1
-            soda    = 1
-            uiops   = 1
+            adpaa     = 1
+            adtae     = 1
+            drilsdown = 1
+            eufar     = 1
+            samac     = 1
+            simdata   = 1
+            soda      = 1
+            uiops     = 1
 
 # Check for list of packages to install.
 for param in sys.argv:
@@ -433,6 +463,10 @@ for param in sys.argv:
         aospy = 1
     if (param == 'aospy'):
         aospy = 1
+    if (param == 'DRILSDOWN'):
+        drilsdown = 1
+    if (param == 'drilsdown'):
+        drilsdown = 1
     if (param == 'EUFAR'):
         eufar = 1
     if (param == 'eufar'):
@@ -467,11 +501,6 @@ class Progress(git.remote.RemoteProgress):
 
 print "Install Packages:"
 
-
-
-
-print "Finished install Packages:"
-
 ### Python for the Atmospheric and Oceanic Sciences (PyAOS). ###
 if (aospy):
     try:
@@ -489,6 +518,8 @@ if (aospy):
         if __name__ == '__main__':
             install('aospy')
         print "    Finsihed installing AOSPY package."
+
+print "Finished install Packages:"
 
 
 print "Cloning and Updating Repositories:"
@@ -600,6 +631,45 @@ if (adtae):
         repo = git.cmd.Git('ADTAE')
         repo.pull()
         print "    Finished with ADTAE."
+
+
+### Airborne Data Testing and Evaluation (ADTAE) software package. ###
+if (adtae):
+    # Create main ADTAE directory.
+    print "  Working on Airborne Data Testing and Evaluation (ADTAE) package."
+    if not os.path.isdir("ADTAE"):
+        os.mkdir('ADTAE')
+        print "    Cloning ADTAE repository."
+        repo = git.Repo.clone_from(
+            'git://git.code.sf.net/p/adtae/code',
+            'ADTAE',
+            progress=Progress())
+        print "    Finished cloning ADTAE repository."
+    else:
+        # Update the existing repository.
+        print "    Updating ADTAE repository."
+        repo = git.cmd.Git('ADTAE')
+        repo.pull()
+        print "    Finished with ADTAE."
+
+### Drawing Rich Integrated Lat-lon-time Subsets from Dataservers Online into Working Notebooks package. ###
+if (drilsdown):
+    # Create main DRILSDOWN directory.
+    print "  Working on DRILSDOWN package."
+    if not os.path.isdir("DRILSDOWN"):
+        os.mkdir('DRILSDOWN')
+        print "    Cloning DRILSDOWN repository."
+        repo = git.Repo.clone_from(
+            'git://github.com/Unidata/drilsdown.git',
+            'DRILSDOWN',
+            progress=Progress())
+        print "    Finished cloning DRILSDOWN repository."
+    else:
+        # Update the existing repository.
+        print "    Updating GRILSDOWN repository."
+        repo = git.cmd.Git('DRILSDOWN')
+        repo.pull()
+        print "    Finished with DRILSDOWN."
 
 
 ### EUFAR General Airborne Data-processing Software (EUFAR). ###
