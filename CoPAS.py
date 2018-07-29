@@ -22,7 +22,7 @@ EXECUTION EXAMPLE:
   ${HOME}/COPAS/CoPAS.py
 
 SYNTAX:
-  CoPAS.py <-h|-s> <ADPAA> <ADTAE> <EGADS> <SAMAC> <SIMDATA> <SODA> <UIOPS> <nobinary> <notesting>
+  CoPAS.py <-h|-s> <ADPAA> <ADTAE> <DRILSDOWN> <EGADS> <SAMAC> <SIMDATA> <SODA> <UIOPS> <nobinary> <notesting>
   <-h>    - Print Syntax message.
   <-s>    - Install source package in addition to binary package.
   ADPAA     - Clone/pull the ADPAA SVN repository.
@@ -394,7 +394,7 @@ else:
 def help_message():
     print ('Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <SODA> <UIOPS> <nobinary> <notesting>')
     print ('  -h        Print help message.')
-    print ('  -s        Include "source" code along with binary installation.')
+    print ('  -s        Include "source" code without binary installation.')
     print ('  ADPAA     Process Airborne Data Processing and Analysis (ADPAA) package.')
     print ('  ADTAE     Process Airborne Data Testing and Evaluation (ADTAE) package.')
     print ('  EUFAR     Process EUFAR General Airborne Data-processing Software (EUFAR) package.')
@@ -427,6 +427,7 @@ for param in sys.argv:
         exit()
     if param.startswith('-s'):
         source = 1
+        nobinary = 1
         # If no parameter options, install all packages.
         if (len(sys.argv) < 3):
             adpaa     = 1
