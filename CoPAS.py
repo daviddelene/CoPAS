@@ -427,7 +427,7 @@ for param in sys.argv:
         exit()
     if param.startswith('-s'):
         source = 1
-        nobinary = 1
+        binary = 0
         # If no parameter options, install all packages.
         if (len(sys.argv) < 3):
             adpaa     = 1
