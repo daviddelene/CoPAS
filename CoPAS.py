@@ -573,7 +573,7 @@ if (adpaa):
         os.chdir('../..')
 
     if (source):
-        if not os.path.isdir("ADPAA"):
+        if not os.path.isdir("ADPAA/src"):
             print "    Cloning ADPAA source code from repository."
             if not os.path.isdir("ADPAA"):
                 os.mkdir('ADPAA')
