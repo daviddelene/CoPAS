@@ -407,6 +407,10 @@ def help_message():
     print ('  UIOPS     Process University of Illinois OAP Processing Software (UOIPS) package.')
     print ('  nobinary  Do not install binary packages.')
     print ('  notesting Do not test for support packages.')
+    print ('')
+    print ('  ENIVIRONMENTAL VARIABLES:')
+    print ('    SVN_USERNAME - Checks out repositories using the username defined.')
+
 
 # Define default options for package installation.
 adpaa     = 0
@@ -579,7 +583,11 @@ if (adpaa):
                 os.mkdir('ADPAA')
             os.chdir('ADPAA')
             client = pysvn.Client()
-            client.checkout('svn://svn.code.sf.net/p/adpaa/code/trunk/src','src')
+            svn_username = os.environ.get('SVN_USERNAME')
+            if svn_username is None:
+              client.checkout('svn://svn.code.sf.net/p/adpaa/code/trunk/src','src')
+            else:
+              client.checkout('svn+ssh://'+svn_username+'@svn.code.sf.net/p/adpaa/code/trunk/src','src')
             os.chdir('..')
             print "    Finished cloning ADPAA source code from repository."
         else:
