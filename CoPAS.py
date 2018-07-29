@@ -46,7 +46,9 @@ DEVELOPERS:
 NOTES:
   If available, script installs a binary distribution of the package.
   If no binary distribution is available, then a copy of the package repository
-  is installed.
+  is installed.  If the -s option is used to install source, still need binary
+  version of packages like ADPAA so don't have to compile and build the code.
+  
 
   Program has three main parts:
     1.)  Tests to check for required python packages.
@@ -394,7 +396,7 @@ else:
 def help_message():
     print ('Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <SODA> <UIOPS> <nobinary> <notesting>')
     print ('  -h        Print help message.')
-    print ('  -s        Include "source" code without binary installation.')
+    print ('  -s        Include "source" code in addition to binary installation.')
     print ('  ADPAA     Process Airborne Data Processing and Analysis (ADPAA) package.')
     print ('  ADTAE     Process Airborne Data Testing and Evaluation (ADTAE) package.')
     print ('  EUFAR     Process EUFAR General Airborne Data-processing Software (EUFAR) package.')
@@ -427,7 +429,6 @@ for param in sys.argv:
         exit()
     if param.startswith('-s'):
         source = 1
-        binary = 0
         # If no parameter options, install all packages.
         if (len(sys.argv) < 3):
             adpaa     = 1
