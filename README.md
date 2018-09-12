@@ -13,7 +13,7 @@ Download Packages:
 - cd ${HOME}/CoPAS
 - ./CoPAS.py
 
-Update Package:
+Update (Submitting Files) Repository:
 ---------------
 - git commit file
 - git push origin master
@@ -39,8 +39,7 @@ https://github.com/daviddelene/CoPAS.git
 git clone
 https://github.com/daviddelene/CoPAS.git
 - Setup Aircraft Software:
-cd ~/CoPAS
-~/CoPAS/CoPAS.py
+cd ~/CoPAS && ~/CoPAS/CoPAS.py
 - Setup ADPAA on Linux:
 ~/CoPAS/ADPAA/bin/adpaa setup
 - Setup Data Set:
