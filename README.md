@@ -41,7 +41,7 @@ https://github.com/daviddelene/CoPAS.git
 - Setup Aircraft Software:
 cd ~/CoPAS && ~/CoPAS/CoPAS.py
 - Setup ADPAA on Linux:
-~/CoPAS/ADPAA/bin/adpaa setup
+~/CoPAS/ADPAA/bin/adpaa setup binary
 - Setup Data Set:
 cp –r ~/CoPAS/ADTAE/TestData/FlightData/20150728_153107 ~/20150728_153107-SandBox
 
