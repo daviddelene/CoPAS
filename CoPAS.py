@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 NAME:
@@ -87,6 +87,7 @@ MODIFICATIONS:
     Added -S and -t options.
     Added all_packages function.
     Updated print statements for both python 2 and 3.
+    Replace urllib2 with urllib3 for python3 usage.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -512,10 +513,18 @@ else:
     print ("  The pysvn module imported.")
 
 try:
+    imp.find_module('shutil')
+except ImportError:
+    print ("**  WARNInG:  The python 'shutil' module does not exists.")
+    pass
+else:
+    import shutil
+    print ("  The shutil module imported.")
+
+try:
     imp.find_module('sys')
 except ImportError:
     print ("**  WARNInG:  The python 'sys' module does not exists.")
-    print ("**    Please install (see suggestion below) and execute again.")
     pass
 else:
     import sys 
@@ -525,25 +534,22 @@ try:
     import tarfile
 except ImportError:
     print ("**  WARNING:  The python 'tarfile' module does not exists.")
-    print ("**    Please install (see suggestion below) and execute again.")
-    print ("**    Redhat - sudo yum install python-libs")
-    print ("**    Fedora - sudo dnf install python-libs")
     pass
 else:
     import tarfile
     print ("  The tarfile module imported.")
 
 try:
-    import urllib2
+    import urllib3
 except ImportError:
-    print ("**  WARNING:  The python 'urllib2' module does not exists.")
+    print ("**  WARNING:  The python 'urllib3' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
-    print ("**     Redhat - sudo yum install python-libs")
-    print ("**     Fedora - sudo dnf install python-libs")
+    print ("**     Redhat - sudo yum install python3-urllibs2")
+    print ("**     Fedora - sudo dnf install python3-urllibs2")
     pass
 else:
-    import urllib2
-    print ("  The urllib2 module imported.")
+    import urllib3
+    print ("  The urllib3 module imported.")
 
 try:
     import unittest2
@@ -584,27 +590,13 @@ if (adpaa):
 
         # Download tar file of binary package using progress bar.
         url = "https://sourceforge.net/projects/adpaa/files/ADPAA.tar.gz"
-        file_name = url.split('/')[-1]
-        u = urllib2.urlopen(url)
-        f = open(file_name, 'wb')
-        meta = u.info()
-        file_size = int(meta.getheaders("Content-Length")[0])
-        print ("    Downloading ADPAA Binary Version: %s Bytes: %s" % (file_name, file_size))
+        filename = url.split('/')[-1]
+        http = urllib3.PoolManager()
 
-        file_size_dl = 0
-        block_sz = 8192
-        while True:
-            buffer = u.read(block_sz)
-            if not buffer:
-                break
+        with http.request('GET',url, preload_content=False) as resp, open(filename, 'wb') as out_file:
+            shutil.copyfileobj(resp, out_file)
 
-            file_size_dl += len(buffer)
-            f.write(buffer)
-            status = r"%10d  [%3.2f%%]" % (file_size_dl, file_size_dl * 100. / file_size)
-            status = status + chr(8)*(len(status)+1)
-            print (status)
-
-        f.close()
+        resp.release_conn()
 
         # Extract distribution from compressed tar file.
         print ("   Extracting ADPAA distribution from compressed tar file.")
