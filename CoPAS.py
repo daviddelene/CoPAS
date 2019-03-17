@@ -85,7 +85,7 @@ MODIFICATIONS:
     Added cloning of DRILSDOWN.
   David Delene <delene@aero.und.edu> - 2019/03/17
     Added -S and -t options.
-    Added all_packages funtion.
+    Added all_packages function.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
