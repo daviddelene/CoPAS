@@ -87,6 +87,7 @@ MODIFICATIONS:
     Added -S and -t options.
     Added all_packages function.
     Updated print statements for both python 2 and 3.
+    Added comment about Redhat install of unittest2.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -555,7 +556,8 @@ try:
 except ImportError:
     print ("**  WARNING:  The python 'unittest2' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
-    print ("**      Fedora - sudo dnf install python3-unittest2")
+    print ("**      Redhat - sudo yum install python-unittest2")
+    print ("**      Fedora - sudo dnf install python-unittest2")
     print ("**      Ubuntu - sudo apt install python-unittest2")
     pass
 else:
