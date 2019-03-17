@@ -17,22 +17,29 @@ Update the CoPAS.py File
   git push origin master
 
 EXECUTION EXAMPLE:
-  mkdir ${HOME}/CoPAS_Packages
-  cd ${HOME/CoPAS_Packages
-  ${HOME}/COPAS/CoPAS.py
+  Get Help:
+    CoPAS.py -h
+  Test for Support Packages:
+    CoPAS.py -t
+  Install only the ADPAA package, binary and source pacakges:
+    CoPAS.py -s ADPAA
+  Install or update all package, onlye source versions:
+    CoPAS.py -S
 
 SYNTAX:
-  CoPAS.py <-h|-s> <ADPAA> <ADTAE> <DRILSDOWN> <EGADS> <SAMAC> <SIMDATA> <SODA> <UIOPS> <nobinary> <notesting>
+  CoPAS.py <-h|-s|-t> <ADPAA> <ADTAE> <DRILSDOWN> <EGADS> <SAMAC> <SIMDATA> <SODA> <UIOPS> <nobinary> <notesting>
   <-h>    - Print Syntax message.
+  <-S>    - Install source package but no binary package.
   <-s>    - Install source package in addition to binary package.
+  <-t>    - Test for necessary support packages.
   ADPAA     - Clone/pull the ADPAA SVN repository.
   ADTAE     - Clone/pull the ADTAE Git repository.
   DRILSDOWN - Clone/pull the DRILSDOWN repository.
   EGADS     - install the EUFAR package.
-  SAMAC   - Install the SAMAC package.
-  SIMDATA - Download NCAR probe simulation data sets.
-  SODA    - Install the SODA package.
-  UIOPS   - Install the UIOPS package.
+  SAMAC     - Install the SAMAC package.
+  SIMDATA   - Download NCAR probe simulation data sets.
+  SODA      - Install the SODA package.
+  UIOPS     - Install the UIOPS package.
   <nobinary>  - Do not install binary packages.
   <notesting> - Do not test for support packages.
 
@@ -76,6 +83,9 @@ MODIFICATIONS:
     Added pull (updating) of git repositories.
   David Delene <delene@aero.und.edu> - 2018/07/08
     Added cloning of DRILSDOWN.
+  David Delene <delene@aero.und.edu> - 2019/03/17
+    Added -S and -t options.
+    Added all_packages funtion.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -281,7 +291,7 @@ REFERENCES:
 
 
 COPYRIGHT:
-  2016, 2017, 2018 David Delene
+  2016, 2017, 2018, 2019 David Delene
 
   This program is distributed under terms of the GNU General Public License
  
@@ -301,159 +311,100 @@ COPYRIGHT:
   along with ADPAA.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-
-# Import package with existing checking.
-print "Importing Modules:"
-import imp
-print "  The imp module imported."
-
 try:
-    imp.find_module('git')
+    import sys
 except ImportError, e:
-    print "**  WARNING:  The python 'git' module does not exists."
-    print "**    Please install (see suggestion below) and execute again."
-    print "**    Redhat - sudo yum install GitPython"
-    print "**    Fedora - sudo dnf install python2-GitPython"
-    print "**    Ubuntu - sudo apt install python-git"
-    pass
-else:
-    import git
-    print "  The git module imported."
+    print "    Required python 'sys' module is not installed."
+    quit()
+ 
+# Define all default options values.
+binary       = 1
+source       = 0
+testing      = 1
+testing_only = 0
 
-try:
-    imp.find_module('os')
-    import os
-except ImportError, e:
-    print "**  WARNING:  The python 'os' module does not exists."
-    print "**    Please install (see suggestion below) and execute again."
-    print "**    Redaht - sudo yum install python-libs"
-    print "**    Fedora - sudo dnf install python-libs"
-    pass
-else:
-    import os
-    print "  The os module imported."
+# Turn off all packages by default.
+adpaa        = 0
+adtae        = 0
+aospy        = 0
+drilsdown    = 0
+eufar        = 0
+samac        = 0
+simdata      = 0
+soda         = 0
+uiops        = 0
 
-try:
-    imp.find_module('pysvn')
-    import pysvn
-except ImportError, e:
-    print "**  WARNING:  The python 'pysvn' module does not exists."
-    print "**    Please install (see suggestion below) and execute again."
-    print "**    Redhat - sudo yum install pysvn"
-    print "**    Fedora - sudo dnf install pysvn"
-    print "**    Ubuntu - sudo apt install python-svn"
-    pass
-else:
-    import pysvn
-    print "  The pysvn mdule imported."
+# Routine to turn on/off all packages.
+def all_packages(status):
+    if status == 'On': 
+        adpaa     = 1
+        adtae     = 1
+        drilsdown = 1
+        eufar     = 1
+        samac     = 1
+        simdata   = 1
+        soda      = 1
+        uiops     = 1
+    else:
+        adpaa     = 0
+        adtae     = 0
+        drilsdown = 0
+        eufar     = 0
+        samac     = 0
+        simdata   = 0
+        soda      = 0
+        uiops     = 0
+    return (adpaa,adtae,drilsdown,eufar,samac,soda,uiops)
 
-try:
-    imp.find_module('sys')
-except ImportError, e:
-    print "**  WARNInG:  The python 'sys' module does not exists."
-    print "**    Please install (see suggestion below) and execute again."
-    pass
-else:
-    import sys 
-    print "  The sys mdule imported."
-
-try:
-    import tarfile
-except ImportError, e:
-    print "**  WARNING:  The python 'tarfile' module does not exists."
-    print "**    Please install (see suggestion below) and execute again."
-    print "**    Redhat - sudo yum install python-libs"
-    print "**    Fedora - sudo dnf install python-libs"
-    pass
-else:
-    import tarfile
-    print "  The tarfile mdule imported."
-
-try:
-    import urllib2
-except ImportError, e:
-    print "**  WARNING:  The python 'urllib2' module does not exists."
-    print "**    Please install (see suggestion below) and execute again."
-    print "**     Redhat - sudo yum install python-libs"
-    print "**     Fedora - sudo dnf install python-libs"
-    pass
-else:
-    import urllib2
-    print "  The urllib2 mdule imported."
-
-try:
-    import unittest2
-except ImportError, e:
-    print "**  WARNING:  The python 'unittest2' module does not exists."
-    print "**    Please install (see suggestion below) and execute again."
-    print "**      Fedora - sudo dnf install python2-unittest2"
-    print "**      Ubuntu - sudo apt install python-unittest2"
-    pass
-else:
-    import unittest2
-    print "  The unittest2 mdule imported."
-
+# Define the help/syntax message.
 def help_message():
     print ('Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <SODA> <UIOPS> <nobinary> <notesting>')
-    print ('  -h        Print help message.')
-    print ('  -s        Include "source" code in addition to binary installation.')
-    print ('  ADPAA     Process Airborne Data Processing and Analysis (ADPAA) package.')
-    print ('  ADTAE     Process Airborne Data Testing and Evaluation (ADTAE) package.')
-    print ('  EUFAR     Process EUFAR General Airborne Data-processing Software (EUFAR) package.')
-    print ('  DRILSDOWN Process Drawing Rich Integrated Lat-lon-time Subsets from Dataservers Online into Working Notebooks (DRILSDOWN).')
-    print ('  SAMAC     Software for Airborne Measurements of Aerosol and Clouds (SAMAC) package.')
-    print ('  SIMDATA   Simulation probe data set.')
-    print ('  SODA      System for OAP Data Analysis (SODA) package.')
-    print ('  UIOPS     Process University of Illinois OAP Processing Software (UOIPS) package.')
-    print ('  nobinary  Do not install binary packages.')
-    print ('  notesting Do not test for support packages.')
-    print ('')
+    print ('  OPTIONS:')
+    print ('    -h        Print help message.')
+    print ('    -S        Include "source" code but no binary installation.')
+    print ('    -s        Include "source" code in addition to binary installation.')
+    print ('    -t        Only test for necessary support packages.')
+    print ('  PACKAGES INCLUDED (Default - All Packages):')
+    print ('    ADPAA     Process Airborne Data Processing and Analysis (ADPAA) package.')
+    print ('    ADTAE     Process Airborne Data Testing and Evaluation (ADTAE) package.')
+    print ('    EUFAR     Process EUFAR General Airborne Data-processing Software (EUFAR) package.')
+    print ('    DRILSDOWN Process Drawing Rich Integrated Lat-lon-time Subsets from Dataservers Online into Working Notebooks (DRILSDOWN).')
+    print ('    SAMAC     Software for Airborne Measurements of Aerosol and Clouds (SAMAC) package.')
+    print ('    SIMDATA   Simulation probe data set.')
+    print ('    SODA      System for OAP Data Analysis (SODA) package.')
+    print ('    UIOPS     Process University of Illinois OAP Processing Software (UOIPS) package.')
+    print ('  PREFERENCES:')
+    print ('    nobinary  Do not install binary packages.')
+    print ('    notesting Do not test for support packages.')
     print ('  ENIVIRONMENTAL VARIABLES:')
-    print ('    SVN_USERNAME - Checks out repositories using the username defined.')
+    print ('    SVN_USERNAME - Checks out repositories using the defiend username.')
 
+# Turn off all packages by default.
+adpaa,adtae,drilsdown,eufar,samac,soda,uiops = all_packages('Off')
 
-# Define default options for package installation.
-adpaa     = 0
-adtae     = 0
-aospy     = 0
-binary    = 1
-drilsdown = 0
-eufar     = 0
-samac     = 0
-simdata   = 0
-soda      = 0
-source    = 0
-testing   = 1
-uiops     = 0
-
-# Check for help request.
+# Check for - command line options, for example -h.
 for param in sys.argv:
     if param.startswith('-h'):
         help_message()
         exit()
+    if param.startswith('-S'):
+        source = 1
+        binary = 0
+        # If no parameter options, install all packages.
+        if (len(sys.argv) < 3):
+            adpaa,adtae,drilsdown,eufar,samac,soda,uiops = all_packages('On')
     if param.startswith('-s'):
         source = 1
         # If no parameter options, install all packages.
         if (len(sys.argv) < 3):
-            adpaa     = 1
-            adtae     = 1
-            drilsdown = 1
-            eufar     = 1
-            samac     = 1
-            simdata   = 1
-            soda      = 1
-            uiops     = 1
+            adpaa,adtae,drilsdown,eufar,samac,soda,uiops = all_packages('On')
     else:
         # If no parameter options, install all packages.
         if (len(sys.argv) < 2):
-            adpaa     = 1
-            adtae     = 1
-            drilsdown = 1
-            eufar     = 1
-            samac     = 1
-            simdata   = 1
-            soda      = 1
-            uiops     = 1
+            adpaa,adtae,drilsdown,eufar,samac,soda,uiops = all_packages('On')
+
+    if param.startswith('-t'):
+        testing_only  = 1
 
 # Check for list of packages to install.
 for param in sys.argv:
@@ -501,31 +452,117 @@ for param in sys.argv:
     if (param == 'notesting'):
         testing = 0
 
+
+# Import package with existing checking.
+print "Importing Modules:"
+import imp
+print "  The imp module imported."
+
+try:
+    imp.find_module('git')
+except ImportError, e:
+    print "**  WARNING:  The python 'git' module does not exists."
+    print "**    Please install (see suggestion below) and execute again."
+    print "**    Redhat - sudo yum install GitPython"
+    print "**    Fedora - sudo dnf install python2-GitPython"
+    print "**    Ubuntu - sudo apt install python-git"
+    pass
+else:
+    import git
+    print "  The git module imported."
+
+try:
+    imp.find_module('os')
+    import os
+except ImportError, e:
+    print "**  WARNING:  The python 'os' module does not exists."
+    print "**    Please install (see suggestion below) and execute again."
+    print "**    Redaht - sudo yum install python-libs"
+    print "**    Fedora - sudo dnf install python-libs"
+    pass
+else:
+    import os
+    print "  The os module imported."
+
+### PIP required for AOSPY. ###
+try:
+    import pip
+except ImportError, e:
+    print "  The python 'pip' module does not exists."
+    print "  pip only required for AOSPY."
+    pass
+else:
+    import pip
+    print "  The pip module imported."
+
+try:
+    imp.find_module('pysvn')
+    import pysvn
+except ImportError, e:
+    print "**  WARNING:  The python 'pysvn' module does not exists."
+    print "**    Please install (see suggestion below) and execute again."
+    print "**    Redhat - sudo yum install pysvn"
+    print "**    Fedora - sudo dnf install pysvn"
+    print "**    Ubuntu - sudo apt install python-svn"
+    pass
+else:
+    import pysvn
+    print "  The pysvn module imported."
+
+try:
+    imp.find_module('sys')
+except ImportError, e:
+    print "**  WARNInG:  The python 'sys' module does not exists."
+    print "**    Please install (see suggestion below) and execute again."
+    pass
+else:
+    import sys 
+    print "  The sys module imported."
+
+try:
+    import tarfile
+except ImportError, e:
+    print "**  WARNING:  The python 'tarfile' module does not exists."
+    print "**    Please install (see suggestion below) and execute again."
+    print "**    Redhat - sudo yum install python-libs"
+    print "**    Fedora - sudo dnf install python-libs"
+    pass
+else:
+    import tarfile
+    print "  The tarfile module imported."
+
+try:
+    import urllib2
+except ImportError, e:
+    print "**  WARNING:  The python 'urllib2' module does not exists."
+    print "**    Please install (see suggestion below) and execute again."
+    print "**     Redhat - sudo yum install python-libs"
+    print "**     Fedora - sudo dnf install python-libs"
+    pass
+else:
+    import urllib2
+    print "  The urllib2 module imported."
+
+try:
+    import unittest2
+except ImportError, e:
+    print "**  WARNING:  The python 'unittest2' module does not exists."
+    print "**    Please install (see suggestion below) and execute again."
+    print "**      Fedora - sudo dnf install python2-unittest2"
+    print "**      Ubuntu - sudo apt install python-unittest2"
+    pass
+else:
+    import unittest2
+    print "  The unittest2 module imported."
+
+
+# Exit if only want testing for support programs.
+if testing_only:
+    exit()
+
 class Progress(git.remote.RemoteProgress):
     def update(self, op_code, cur_count, max_count=None, message=''):
         print '{0}\r'.format(self._cur_line),
-
-print "Install Packages:"
-
-### Python for the Atmospheric and Oceanic Sciences (PyAOS). ###
-if (aospy):
-    try:
-        import pip
-    except ImportError, e:
-        print "  The python 'pip' module does not exists."
-        print "  Please install (see suggestion below) and execute again."
-        pass
-    else:
-        import pip
-        print "    Installing AOSPY package."
-        print "    WARNING:  AOSPY installation requires sudo excutation of CoPAS, for example 'sudo ./CoPAS'."
-        def install(package):
-            pip.main(['install', package])
-        if __name__ == '__main__':
-            install('aospy')
-        print "    Finsihed installing AOSPY package."
-
-print "Finished install Packages:"
 
 
 print "Cloning and Updating Repositories:"
@@ -642,25 +679,15 @@ if (adtae):
         repo.pull()
         print "    Finished with ADTAE."
 
+if (aospy):
+    print "    Installing AOSPY package."
+    print "    WARNING:  AOSPY installation requires sudo excutation of CoPAS, for example 'sudo ./CoPAS'."
+    def install(package):
+        pip.main(['install', package])
+    if __name__ == '__main__':
+        install('aospy')
+    print "    Finsihed installing AOSPY package."
 
-### Airborne Data Testing and Evaluation (ADTAE) software package. ###
-if (adtae):
-    # Create main ADTAE directory.
-    print "  Working on Airborne Data Testing and Evaluation (ADTAE) package."
-    if not os.path.isdir("ADTAE"):
-        os.mkdir('ADTAE')
-        print "    Cloning ADTAE repository."
-        repo = git.Repo.clone_from(
-            'git://git.code.sf.net/p/adtae/code',
-            'ADTAE',
-            progress=Progress())
-        print "    Finished cloning ADTAE repository."
-    else:
-        # Update the existing repository.
-        print "    Updating ADTAE repository."
-        repo = git.cmd.Git('ADTAE')
-        repo.pull()
-        print "    Finished with ADTAE."
 
 ### Drawing Rich Integrated Lat-lon-time Subsets from Dataservers Online into Working Notebooks package. ###
 if (drilsdown):
