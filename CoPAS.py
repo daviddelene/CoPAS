@@ -470,9 +470,8 @@ try:
 except ImportError:
     print ("**  WARNING:  The python 'git' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
-    print ("**    Redhat - sudo yum install GitPython")
     print ("**    Fedora - sudo dnf install python3-GitPython")
-    print ("**    Ubuntu - sudo apt install python-git")
+    print ("**    Ubuntu - sudo apt install python3-git")
     pass
 else:
     import git
