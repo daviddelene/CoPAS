@@ -507,9 +507,9 @@ try:
 except ImportError:
     print ("**  WARNING:  The python 'pysvn' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
-    print ("**    Redhat - sudo yum install pysvn")
-    print ("**    Fedora - sudo dnf install pysvn")
-    print ("**    Ubuntu - sudo apt install python-svn")
+    print ("**    Redhat - sudo yum install python3-pysvn")
+    print ("**    Fedora - sudo dnf install python3-pysvn")
+    print ("**    Ubuntu - sudo apt install python3-svn")
     pass
 else:
     import pysvn
