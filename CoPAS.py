@@ -88,6 +88,7 @@ MODIFICATIONS:
     Added all_packages function.
     Updated print statements for both python 2 and 3.
     Replace urllib2 with urllib3 for python3 usage.
+    Added cloning ADTAE using SOURCEFORGE_USER.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -380,7 +381,8 @@ def help_message():
     print ("    nobinary  Do not install binary packages.")
     print ("    notesting Do not test for support packages.")
     print ("  ENIVIRONMENTAL VARIABLES:")
-    print ("    SVN_USERNAME - Checks out repositories using the defiend username.")
+    print ("    SVN_USERNAME     Checks out svn repositories using the defiend username.")
+    print ("    SOURCEFORGE_USER Checks out Sourceforge git repositories using defiend username.")
 
 # Turn off all packages by default.
 adpaa,adtae,drilsdown,eufar,samac,soda,uiops = all_packages('Off')
@@ -467,7 +469,7 @@ except ImportError:
     print ("**  WARNING:  The python 'git' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
     print ("**    Redhat - sudo yum install GitPython")
-    print ("**    Fedora - sudo dnf install python2-GitPython")
+    print ("**    Fedora - sudo dnf install python3-GitPython")
     print ("**    Ubuntu - sudo apt install python-git")
     pass
 else:
@@ -544,8 +546,8 @@ try:
 except ImportError:
     print ("**  WARNING:  The python 'urllib3' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
-    print ("**     Redhat - sudo yum install python3-urllibs2")
-    print ("**     Fedora - sudo dnf install python3-urllibs2")
+    print ("**     Redhat - sudo yum install python-urllibs3")
+    print ("**     Fedora - sudo dnf install python3-urllibs3")
     pass
 else:
     import urllib3
@@ -556,8 +558,9 @@ try:
 except ImportError:
     print ("**  WARNING:  The python 'unittest2' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
-    print ("**      Fedora - sudo dnf install python2-unittest2")
-    print ("**      Ubuntu - sudo apt install python-unittest2")
+    print ("**      Redhat - sudo dnf install python3-unittest2")
+    print ("**      Fedora - sudo dnf install python3-unittest2")
+    print ("**      Ubuntu - sudo apt install python3-unittest2")
     pass
 else:
     import unittest2
@@ -615,10 +618,14 @@ if (adpaa):
             os.chdir('ADPAA')
             client = pysvn.Client()
             svn_username = os.environ.get('SVN_USERNAME')
+            sourceforge_user = os.environ.get('SOURCEFORGE_USER')
             if svn_username is None:
-              client.checkout('svn://svn.code.sf.net/p/adpaa/code/trunk/src','src')
+                if sourceforge_user is None:
+                    client.checkout('svn://svn.code.sf.net/p/adpaa/code/trunk/src','src')
+                else:
+                    client.checkout('svn+ssh://'+sourceforge_user+'@svn.code.sf.net/p/adpaa/code/trunk/src','src')
             else:
-              client.checkout('svn+ssh://'+svn_username+'@svn.code.sf.net/p/adpaa/code/trunk/src','src')
+                client.checkout('svn+ssh://'+svn_username+'@svn.code.sf.net/p/adpaa/code/trunk/src','src')
             os.chdir('..')
             print ("    Finished cloning ADPAA source code from repository.")
         else:
@@ -661,10 +668,16 @@ if (adtae):
     if not os.path.isdir("ADTAE"):
         os.mkdir('ADTAE')
         print ("    Cloning ADTAE repository.")
-        repo = git.Repo.clone_from(
-            'git://git.code.sf.net/p/adtae/code',
-            'ADTAE',
-            progress=Progress())
+        sourceforge_user = os.environ.get('SOURCEFORGE_USER')
+        if sourceforge_user is None:
+            repo = git.Repo.clone_from(
+                'git://git.code.sf.net/p/adtae/code',
+                'ADTAE',
+                progress=Progress())
+        else:
+            repo = git.Repo.clone_from(
+                'ssh://'+sourceforge_user+'@git.code.sf.net/p/adtae/code',
+                'ADTAE')
         print ("    Finished cloning ADTAE repository.")
     else:
         # Update the existing repository.
