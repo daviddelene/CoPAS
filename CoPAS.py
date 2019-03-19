@@ -51,6 +51,8 @@ DEVELOPERS:
   Joseph Finlon (joefinlon) <finlon2@illinois.edu>
 
 NOTES:
+  This script is the python 3 version, for python2 run CoPas_python2.py.
+
   If available, script installs a binary distribution of the package.
   If no binary distribution is available, then a copy of the package repository
   is installed.  If the -s option is used to install source, still need binary
