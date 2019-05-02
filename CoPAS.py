@@ -35,7 +35,8 @@ SYNTAX:
   ADPAA     - Clone/pull the ADPAA SVN repository.
   ADTAE     - Clone/pull the ADTAE Git repository.
   DRILSDOWN - Clone/pull the DRILSDOWN repository.
-  EGADS     - install the EUFAR package.
+  EGADS     - Install the EUFAR package.
+  LROSE     - Install the Lrose.
   SAMAC     - Install the SAMAC package.
   SIMDATA   - Download NCAR probe simulation data sets.
   SODA      - Install the SODA package.
@@ -214,6 +215,23 @@ REFERENCES:
       Toolbox and framework for processing Airborne Atmospheric Data.
       Includes meta-data and units. All algorithms are thoroughly documented
       in separate, referenceable PDF.
+
+
+  The Lidar Radar Open Software Environment (LROSE)
+    DEVELOPERS
+
+    AVAILABILITY
+      Repository - https://github.com/NCAR/lrose-core
+    COPYRIGHT
+
+    PLATFORM (Operatoring Systems Tested On)
+      Linux, Mac, Windows (Linux Subsystem)
+    LANGUAGES
+      C++
+    STATUS (December 27, 2016)
+
+    SCOPE
+      Mainly radar, Lidar data, but some satellite and model data.
 
 
   Software for Airborne Measurements of Aerosol and Clouds (SAMAC)
@@ -593,14 +611,26 @@ if (adpaa):
         os.chdir('binary_distributions')
 
         # Download tar file of binary package using progress bar.
-        url = "https://sourceforge.net/projects/adpaa/files/ADPAA.tar.gz"
-        filename = url.split('/')[-1]
-        http = urllib3.PoolManager()
+        ##url = "http://sourceforge.net/projects/adpaa/files/ADPAA.tar.gz"
+        ##filename = url.split('/')[-1]
+        ##http = urllib3.PoolManager()
 
-        with http.request('GET',url, preload_content=False) as resp, open(filename, 'wb') as out_file:
+        ##with http.request('GET',url, preload_content=False) as resp, open(filename, 'wb') as out_file:
             shutil.copyfileobj(resp, out_file)
 
-        resp.release_conn()
+        ##resp.release_conn()
+
+        url = "http://sourceforge.net/projects/adpaa/files/"
+        file_name = "ADPAA.tar.gz"
+        from requests import get
+        def download(url,file_name):
+            with open(file_name, "wb") as file:
+                response = get(url)
+                file.write(response.content) 
+
+        ##url = "http://sourceforge.net/projects/adpaa/files/"
+        ##filename = "ADPAA.tar.gz"
+        #urllib3.request.urlretrieve(url,filename)
 
         # Extract distribution from compressed tar file.
         print ("   Extracting ADPAA distribution from compressed tar file.")
