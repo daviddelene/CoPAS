@@ -92,6 +92,8 @@ MODIFICATIONS:
     Updated print statements for both python 2 and 3.
     Replace urllib2 with urllib3 for python3 usage.
     Added cloning ADTAE using SOURCEFORGE_USER.
+  David Delene <delene@aero.und.edu> - 2019/05/02
+    Added LROSE/NetCDF
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -791,6 +793,22 @@ if (lrose):
         repo = git.cmd.Git('LROSE')
         repo.pull()
         print ("    Finished with LROSE.")
+
+    # Create main NetCDF directory.
+    print ("  Working on the NetCDF support for (LROSE).")
+    if not os.path.isdir("NetCDF"):
+        os.mkdir('NetCDF')
+        print ("    Cloning NetCDF repository.")
+        repo = git.Repo.clone_from(
+            'https://github.com/NCAR/lrose-netcdf',
+            'NetCDF',
+            progress=Progress())
+    else:
+        # Update the existing repository.
+        print ("    Updating NetCDF repository.")
+        repo = git.cmd.Git('NetCDF')
+        repo.pull()
+        print ("    Finished with NetCDF.")
 
 
 ### Software for Airborne Measurements of Aerosol and Clouds (SAMAC) ###
