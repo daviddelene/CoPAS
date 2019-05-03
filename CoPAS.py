@@ -36,7 +36,7 @@ SYNTAX:
   ADTAE     - Clone/pull the ADTAE Git repository.
   DRILSDOWN - Clone/pull the DRILSDOWN repository.
   EGADS     - Install the EUFAR package.
-  LROSE     - Install the Lrose.
+  LROSE     - Install the Lidar Radar Open Software Environment (LROSE)
   SAMAC     - Install the SAMAC package.
   SIMDATA   - Download NCAR probe simulation data sets.
   SODA      - Install the SODA package.
@@ -219,17 +219,17 @@ REFERENCES:
 
   The Lidar Radar Open Software Environment (LROSE)
     DEVELOPERS
-
+      Mike Dixon
     AVAILABILITY
       Repository - https://github.com/NCAR/lrose-core
     COPYRIGHT
-
+      BSD License - Copyright University Corporation for Atmospheric Research
     PLATFORM (Operatoring Systems Tested On)
       Linux, Mac, Windows (Linux Subsystem)
     LANGUAGES
       C++
-    STATUS (December 27, 2016)
-
+    STATUS (May 2, 2019)
+      Cor Relase 20190130
     SCOPE
       Mainly radar, Lidar data, but some satellite and model data.
 
@@ -353,6 +353,7 @@ adtae        = 0
 aospy        = 0
 drilsdown    = 0
 eufar        = 0
+lrose        = 0
 samac        = 0
 simdata      = 0
 soda         = 0
@@ -365,6 +366,7 @@ def all_packages(status):
         adtae     = 1
         drilsdown = 1
         eufar     = 1
+        lrose     = 1
         samac     = 1
         simdata   = 1
         soda      = 1
@@ -374,11 +376,12 @@ def all_packages(status):
         adtae     = 0
         drilsdown = 0
         eufar     = 0
+        lrose     = 0
         samac     = 0
         simdata   = 0
         soda      = 0
         uiops     = 0
-    return (adpaa,adtae,drilsdown,eufar,samac,soda,uiops)
+    return (adpaa,adtae,drilsdown,eufar,lrose,samac,soda,uiops)
 
 # Define the help/syntax message.
 def help_message():
@@ -393,6 +396,7 @@ def help_message():
     print ("    ADTAE     Process Airborne Data Testing and Evaluation (ADTAE) package.")
     print ("    EUFAR     Process EUFAR General Airborne Data-processing Software (EUFAR) package.")
     print ("    DRILSDOWN Process Drawing Rich Integrated Lat-lon-time Subsets from Dataservers Online into Working Notebooks (DRILSDOWN).")
+    print ("    LROSE     The Lidar Radar Open Software Environment (LROSE) package.")
     print ("    SAMAC     Software for Airborne Measurements of Aerosol and Clouds (SAMAC) package.")
     print ("    SIMDATA   Simulation probe data set.")
     print ("    SODA      System for OAP Data Analysis (SODA) package.")
@@ -405,7 +409,7 @@ def help_message():
     print ("    SOURCEFORGE_USER Checks out Sourceforge git repositories using defiend username.")
 
 # Turn off all packages by default.
-adpaa,adtae,drilsdown,eufar,samac,soda,uiops = all_packages('Off')
+adpaa,adtae,drilsdown,eufar,lrose,samac,soda,uiops = all_packages('Off')
 
 # Check for - command line options, for example -h.
 for param in sys.argv:
@@ -417,16 +421,16 @@ for param in sys.argv:
         binary = 0
         # If no parameter options, install all packages.
         if (len(sys.argv) < 3):
-            adpaa,adtae,drilsdown,eufar,samac,soda,uiops = all_packages('On')
+            adpaa,adtae,drilsdown,eufar,lrose,samac,soda,uiops = all_packages('On')
     if param.startswith('-s'):
         source = 1
         # If no parameter options, install all packages.
         if (len(sys.argv) < 3):
-            adpaa,adtae,drilsdown,eufar,samac,soda,uiops = all_packages('On')
+            adpaa,adtae,drilsdown,eufar,lrose,samac,soda,uiops = all_packages('On')
     else:
         # If no parameter options, install all packages.
         if (len(sys.argv) < 2):
-            adpaa,adtae,drilsdown,eufar,samac,soda,uiops = all_packages('On')
+            adpaa,adtae,drilsdown,eufar,lrose,samac,soda,uiops = all_packages('On')
 
     if param.startswith('-t'):
         testing_only  = 1
@@ -453,6 +457,10 @@ for param in sys.argv:
         eufar = 1
     if (param == 'eufar'):
         eufar = 1
+    if (param == 'LROSE'):
+        lrose = 1
+    if (param == 'lrose'):
+        lrose = 1
     if (param == 'SAMAC'):
         samac = 1
     if (param == 'samac'):
@@ -616,7 +624,7 @@ if (adpaa):
         ##http = urllib3.PoolManager()
 
         ##with http.request('GET',url, preload_content=False) as resp, open(filename, 'wb') as out_file:
-            shutil.copyfileobj(resp, out_file)
+        ##    shutil.copyfileobj(resp, out_file)
 
         ##resp.release_conn()
 
@@ -764,6 +772,25 @@ if (eufar):
         repo = git.cmd.Git('EUFAR')
         repo.pull()
         print ("    Finished with EUFAR.")
+
+
+### LROSE Lidar Radar Open Software Environment (LROSE). ###
+if (lrose):
+    # Create main LROSE directory.
+    print ("  Working on the LROSE Lidar Radar Open Software Environment (LROSE).")
+    if not os.path.isdir("LROSE"):
+        os.mkdir('LROSE')
+        print ("    Cloning LROSE repository.")
+        repo = git.Repo.clone_from(
+            'https://github.com/NCAR/lrose-core',
+            'LROSE',
+            progress=Progress())
+    else:
+        # Update the existing repository.
+        print ("    Updating LROSE repository.")
+        repo = git.cmd.Git('LROSE')
+        repo.pull()
+        print ("    Finished with LROSE.")
 
 
 ### Software for Airborne Measurements of Aerosol and Clouds (SAMAC) ###
