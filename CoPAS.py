@@ -97,6 +97,7 @@ MODIFICATIONS:
   David Delene <delene@aero.und.edu> - 2019/09/20
     Updated to using wget to get ADPAA.tar.gz.
     Added additional python module check.
+    Changed to using python3.6 instead of just python3.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
