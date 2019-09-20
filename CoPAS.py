@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 
 """
 NAME:
@@ -94,6 +94,8 @@ MODIFICATIONS:
     Added cloning ADTAE using SOURCEFORGE_USER.
   David Delene <delene@aero.und.edu> - 2019/05/02
     Added LROSE/NetCDF
+  David Delene <delene@aero.und.edu> - 2019/09/20
+    Updated to using wget to get ADPAA.tar.gz.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -506,12 +508,25 @@ else:
     print ("  The git module imported.")
 
 try:
+    imp.find_module('numpy')
+except ImportError:
+    print ("**  WARNING:  The python 'numpy' module does not exists.")
+    print ("**    Please install (see suggestion below) and execute again.")
+    print ("**    Redhat - sudo yum install python3-numpy")
+    print ("**    Fedora - sudo dnf install python3-GitPython")
+    print ("**    Ubuntu - sudo apt install python3-git")
+    pass
+else:
+    import numpy
+    print ("  The numpy module imported.")
+
+try:
     imp.find_module('os')
     import os
 except ImportError:
     print ("**  WARNING:  The python 'os' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
-    print ("**    Redaht - sudo yum install python-libs")
+    print ("**    Redhat - sudo yum install python-libs")
     print ("**    Fedora - sudo dnf install python-libs")
     pass
 else:
@@ -530,18 +545,32 @@ else:
     print ("  The pip module imported.")
 
 try:
-    imp.find_module('pysvn')
-    import pysvn
+    imp.find_module('requests')
+    import requests
+except ImportError:
+    print ("**  WARNING:  The python 'requests' module does not exists.")
+    print ("**    Please install (see suggestion below) and execute again.")
+    print ("**    Redhat - sudo yum install python3-requests")
+    print ("**    Fedora - sudo dnf install python3-requests")
+    print ("**    Ubuntu - sudo apt install python3-requests")
+    pass
+else:
+    import requests
+    print ("  The requests module imported.")
+
+try:
+    imp.find_module('svn')
+    import svn
 except ImportError:
     print ("**  WARNING:  The python 'pysvn' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
-    print ("**    Redhat - sudo yum install python3-pysvn")
-    print ("**    Fedora - sudo dnf install python3-pysvn")
+    print ("**    Redhat - sudo yum install python3-svn")
+    print ("**    Fedora - sudo dnf install python3-svn")
     print ("**    Ubuntu - sudo apt install python3-svn")
     pass
 else:
-    import pysvn
-    print ("  The pysvn module imported.")
+    import svn
+    print ("  The svn module imported.")
 
 try:
     imp.find_module('shutil')
@@ -595,6 +624,17 @@ else:
     import unittest2
     print ("  The unittest2 module imported.")
 
+try:
+    import wget
+except ImportError:
+    print ("**  WARNING:  The python 'wget' module does not exists.")
+    print ("**    Please install (see suggestion below) and execute again.")
+    print ("**      pip install wget")
+    pass
+else:
+    import wget
+    print ("  The wget module imported.")
+
 
 # Exit if only want testing for support programs.
 if testing_only:
@@ -620,27 +660,9 @@ if (adpaa):
             os.mkdir('binary_distributions')
         os.chdir('binary_distributions')
 
-        # Download tar file of binary package using progress bar.
-        ##url = "http://sourceforge.net/projects/adpaa/files/ADPAA.tar.gz"
-        ##filename = url.split('/')[-1]
-        ##http = urllib3.PoolManager()
-
-        ##with http.request('GET',url, preload_content=False) as resp, open(filename, 'wb') as out_file:
-        ##    shutil.copyfileobj(resp, out_file)
-
-        ##resp.release_conn()
-
-        url = "http://sourceforge.net/projects/adpaa/files/"
+        url = "http://sourceforge.net/projects/adpaa/files/ADPAA.tar.gz/download"
         file_name = "ADPAA.tar.gz"
-        from requests import get
-        def download(url,file_name):
-            with open(file_name, "wb") as file:
-                response = get(url)
-                file.write(response.content) 
-
-        ##url = "http://sourceforge.net/projects/adpaa/files/"
-        ##filename = "ADPAA.tar.gz"
-        #urllib3.request.urlretrieve(url,filename)
+        wget.download(url,file_name)
 
         # Extract distribution from compressed tar file.
         print ("   Extracting ADPAA distribution from compressed tar file.")
@@ -657,7 +679,7 @@ if (adpaa):
             if not os.path.isdir("ADPAA"):
                 os.mkdir('ADPAA')
             os.chdir('ADPAA')
-            client = pysvn.Client()
+            client = svn.Client()
             svn_username = os.environ.get('SVN_USERNAME')
             sourceforge_user = os.environ.get('SOURCEFORGE_USER')
             if svn_username is None:
@@ -673,7 +695,7 @@ if (adpaa):
             # Updating existing ADPAA repository.
             print ("    Updating existing ADPAA source code from repository.")
             os.chdir('ADPAA')
-            client = pysvn.Client()
+            client = svn.Client()
             client.update('src')
             os.chdir('..')
             print ("    Finished updating ADPAA source code from repository.")
