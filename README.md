@@ -3,6 +3,12 @@ Community Packages for Airborne Science (CoPAS) is a Github project designed to
 facilitate the installation, setup, and integration of open source software and
 packages related to cloud physics, in-situ airborne data.
 
+Setting up Python3.6 for CoPAS Distribution
+---------------------------------
+- python3.6 -m venv env
+- source env/bin/activate
+- pip3.6 install -r requirements.txt
+
 Clone CoPAS Distribution
 ---------------------------------
 - cd ${HOME}
@@ -12,6 +18,10 @@ Download Packages:
 ------------------
 - cd ${HOME}/CoPAS
 - ./CoPAS.py
+
+Update Python requirements:
+---------------
+pip3.6 freeze > requirements_CoPAS.txt
 
 Update (Submitting Files) Repository:
 ---------------
