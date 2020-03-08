@@ -10,9 +10,10 @@ Clone CoPAS Distribution
 
 Setting up Python3.6 for CoPAS Distribution
 ---------------------------------
+- cd ${HOME}/CoPAS 
 - python3.6 -m venv env
 - source env/bin/activate
-- pip3.6 install -r requirements.txt
+- pip3.6 install -r ./requirements_CoPAS.txt
 
 Execulting CoPAS to Download Packages:
 ------------------
