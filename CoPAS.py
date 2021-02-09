@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3
 
 """
 NAME:
@@ -98,6 +98,10 @@ MODIFICATIONS:
     Updated to using wget to get ADPAA.tar.gz.
     Added additional python module check.
     Changed to using python3.6 instead of just python3.
+  David Delene <delene@aero.und.edu> - 2020/03/23
+    Changed back to using python3 instead of python3.6, better on Aircraft.
+  David Delene <delene@aero.und.edu> - 2021/02/08
+    Changed to using pysvn instead of svn for python3, Getting source code now works.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -561,8 +565,8 @@ else:
     print ("  The requests module imported.")
 
 try:
-    imp.find_module('svn')
-    import svn
+    imp.find_module('pysvn')
+    import pysvn
 except ImportError:
     print ("**  WARNING:  The python 'pysvn' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
@@ -571,8 +575,8 @@ except ImportError:
     print ("**    Ubuntu - sudo apt install python3-svn")
     pass
 else:
-    import svn
-    print ("  The svn module imported.")
+    import pysvn
+    print ("  The pysvn module imported.")
 
 try:
     imp.find_module('shutil')
@@ -681,7 +685,7 @@ if (adpaa):
             if not os.path.isdir("ADPAA"):
                 os.mkdir('ADPAA')
             os.chdir('ADPAA')
-            client = svn.Client()
+            client = pysvn.Client()
             svn_username = os.environ.get('SVN_USERNAME')
             sourceforge_user = os.environ.get('SOURCEFORGE_USER')
             if svn_username is None:
