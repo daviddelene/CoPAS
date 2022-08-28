@@ -25,6 +25,18 @@ Update Python Requirements:
 pip3.6 freeze > requirements_CoPAS.txt
 
 Update (Submitting Files) Repository:
+Notes:
+  Github now requires additional authorization steps.
+  Best to use git-credential-manager, 
+  https://github.com/GitCredentialManager/git-credential-manager/blob/main/README.md
+  For linux OS, need "gpg" and "pass"; for example, sudo apt install git pass. 
+  Best to create a personal access token using gpg.
+    Add export GCM_CREDENTIAL_STORE=gpg in ~/.bashrc
+  Create new GPG key pair
+    gpg --gen-key
+  Initiaze pass with gpg key.
+    pass init <gpg-id>
+  Everything should be automatic and the below should work.
 ---------------
 - git commit file
 - git push origin master
