@@ -12,6 +12,22 @@ Download/Clone CoPAS Distribution
   cd $HOME
   git clone https://github.com/daviddelene/CoPAS.git
 
+Setting up access to git on Linux.
+  Github now requires additional authorization steps.
+    Best to use git-credential-manager,
+    https://github.com/GitCredentialManager/git-credential-manager/blob/main/README.md
+
+  For linux OS, need "gpg" and "pass"; for example, sudo apt install git pass.
+  Best to create a personal access token using gpg.
+
+  Add export GCM_CREDENTIAL_STORE=gpg in ~/.bashrc
+
+  create new GPG key pair
+    - gpg --gen-key
+  Initiaze pass with gpg key.
+    - pass init <gpg-id>
+  Everything should be automatic and the below should work.
+
 Update the CoPAS.py File
   git commit CoPAS.py
   git push origin master
@@ -105,6 +121,7 @@ MODIFICATIONS:
   David Delene <delene@aero.und.edu> - 2022/08/27
     Changed to using import importlib.
     Added miepython.
+    Added notes on GCM Credential.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
