@@ -8,12 +8,12 @@ Clone CoPAS Distribution
 - cd ${HOME}
 - git clone https://github.com/daviddelene/CoPAS.git
 
-Setting up Python3.6 for CoPAS Distribution
+Setting up Python3 for CoPAS Distribution
 ---------------------------------
 - cd ${HOME}/CoPAS 
-- python3.6 -m venv env
+- python3 -m venv env
 - source env/bin/activate
-- pip3.6 install -r ./requirements_CoPAS.txt
+- pip3 install -r ./requirements_CoPAS.txt
 
 Execulting CoPAS to Download Packages:
 ------------------
@@ -22,7 +22,7 @@ Execulting CoPAS to Download Packages:
 
 Update Python Requirements:
 ---------------
-pip3.6 freeze > requirements_CoPAS.txt
+pip3 freeze > requirements_CoPAS.txt
 
 Update (Submitting Files) Repository:
 Notes:
