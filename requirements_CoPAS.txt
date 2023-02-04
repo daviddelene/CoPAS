@@ -2,7 +2,7 @@ certifi==2019.9.11
 chardet==3.0.4
 git-svn-helpers==0.9
 gitdb2==2.0.5
-GitPython==3.0.2
+GitPython==3.1.30
 idna==2.8
 jarn.mkrelease==4.3
 lazy==1.4
