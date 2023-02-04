@@ -9,7 +9,7 @@ lazy==1.4
 linecache2==1.0.0
 nose==1.3.7
 numpy==1.17.2
-pipenv==2018.11.26
+pipenv==2022.1.8
 pysvn==0.1.0
 python-dateutil==2.8.0
 python-git==2018.2.1
