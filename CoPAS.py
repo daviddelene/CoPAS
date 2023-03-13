@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 
 """
 NAME:
@@ -11,22 +11,6 @@ PURPOSE:
 Download/Clone CoPAS Distribution
   cd $HOME
   git clone https://github.com/daviddelene/CoPAS.git
-
-Setting up access to git on Linux.
-  Github now requires additional authorization steps.
-    Best to use git-credential-manager,
-    https://github.com/GitCredentialManager/git-credential-manager/blob/main/README.md
-
-  For linux OS, need "gpg" and "pass"; for example, sudo apt install git pass.
-  Best to create a personal access token using gpg.
-
-  Add export GCM_CREDENTIAL_STORE=gpg in ~/.bashrc
-
-  create new GPG key pair
-    - gpg --gen-key
-  Initiaze pass with gpg key.
-    - pass init <gpg-id>
-  Everything should be automatic and the below should work.
 
 Update the CoPAS.py File
   git commit CoPAS.py
@@ -57,7 +41,8 @@ SYNTAX:
   SIMDATA   - Download NCAR probe simulation data sets.
   SODA      - Install the SODA package.
   UIOPS     - Install the UIOPS package.
-  <nobinary>  - Do not install binary packages.
+  COYOTE    - Install the Coyote package.
+<nobinary>  - Do not install binary packages.
   <notesting> - Do not test for support packages.
 
   No parameter on command line then Clone/pull all repositories.
@@ -66,7 +51,7 @@ DEVELOPERS:
   David Delene <delene@aero.und.edu>
   Nick Gapp (njgapp) <nicholas.james.gapp@ndus.edu>
   Joseph Finlon (joefinlon) <finlon2@illinois.edu>
-
+  Christian Nairy <christian.nairy@und.edu>
 NOTES:
   This script is the python 3 version, for python2 run CoPas_python2.py.
 
@@ -114,14 +99,8 @@ MODIFICATIONS:
     Updated to using wget to get ADPAA.tar.gz.
     Added additional python module check.
     Changed to using python3.6 instead of just python3.
-  David Delene <delene@aero.und.edu> - 2020/03/23
-    Changed back to using python3 instead of python3.6, better on Aircraft.
-  David Delene <delene@aero.und.edu> - 2021/02/08
-    Changed to using pysvn instead of svn for python3, Getting source code now works.
-  David Delene <delene@aero.und.edu> - 2022/08/27
-    Changed to using import importlib.
-    Added miepython.
-    Added notes on GCM Credential.
+  Christian Nairy <christian.nairy@und.edu> - 2023/03/10
+    Added Coyote package installation routine.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -247,7 +226,7 @@ REFERENCES:
       in separate, referenceable PDF.
 
 
-  Lidar Radar Open Software Environment (LROSE)
+  The Lidar Radar Open Software Environment (LROSE)
     DEVELOPERS
       Mike Dixon
     AVAILABILITY
@@ -262,23 +241,6 @@ REFERENCES:
       Cor Relase 20190130
     SCOPE
       Mainly radar, Lidar data, but some satellite and model data.
-
-
-  Miepython
-    DEVELOPERS
-      Scott Prahl
-    AVAILABILITY
-      Repository - https://github.com/scottprahl/miepython.git
-    COPYRIGHT
-      As-is
-    PLATFORM (Operatoring Systems Tested On)
-      Linux, Mac, Windows (Linux Subsystem)
-    LANGUAGES
-      Python
-    STATUS (May 2, 2019)
-      Documentation update April 2021
-    SCOPE
-      Mainly Mie scattering code.
 
 
   Software for Airborne Measurements of Aerosol and Clouds (SAMAC)
@@ -361,7 +323,7 @@ REFERENCES:
 
 
 COPYRIGHT:
-  2016, 2017, 2018, 2019, 2020, 2021, 2022 David Delene
+  2016, 2017, 2018, 2019 David Delene
 
   This program is distributed under terms of the GNU General Public License
  
@@ -401,11 +363,11 @@ aospy        = 0
 drilsdown    = 0
 eufar        = 0
 lrose        = 0
-miepython    = 0
 samac        = 0
 simdata      = 0
 soda         = 0
 uiops        = 0
+coyote       = 0
 
 # Routine to turn on/off all packages.
 def all_packages(status):
@@ -415,27 +377,27 @@ def all_packages(status):
         drilsdown = 1
         eufar     = 1
         lrose     = 1
-        miepython = 1
         samac     = 1
         simdata   = 1
         soda      = 1
         uiops     = 1
+        coyote    = 1
     else:
         adpaa     = 0
         adtae     = 0
         drilsdown = 0
         eufar     = 0
         lrose     = 0
-        miepython = 0
         samac     = 0
         simdata   = 0
         soda      = 0
         uiops     = 0
-    return (adpaa,adtae,drilsdown,eufar,lrose,miepython,samac,soda,uiops)
+        coyote    = 0
+    return (adpaa,adtae,drilsdown,eufar,lrose,samac,soda,uiops,coyote)
 
 # Define the help/syntax message.
 def help_message():
-    print ("Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <LROSE> <MIEPYTHON> <SODA> <UIOPS> <nobinary> <notesting>")
+    print ("Syntax: CoPAS -h -s <ADPAA> <ADTAE> <EUFAR> <SAMAC> <SODA> <UIOPS> <COYOTE> <nobinary> <notesting>")
     print ("  OPTIONS:")
     print ("    -h        Print help message.")
     print ("    -S        Include source code but no binary installation.")
@@ -446,12 +408,12 @@ def help_message():
     print ("    ADTAE     Process Airborne Data Testing and Evaluation (ADTAE) package.")
     print ("    EUFAR     Process EUFAR General Airborne Data-processing Software (EUFAR) package.")
     print ("    DRILSDOWN Process Drawing Rich Integrated Lat-lon-time Subsets from Dataservers Online into Working Notebooks (DRILSDOWN).")
-    print ("    LROSE     Lidar Radar Open Software Environment (LROSE) package.")
-    print ("    MIEPYTHON Mie scattering code written in python.")
+    print ("    LROSE     The Lidar Radar Open Software Environment (LROSE) package.")
     print ("    SAMAC     Software for Airborne Measurements of Aerosol and Clouds (SAMAC) package.")
     print ("    SIMDATA   Simulation probe data set.")
     print ("    SODA      System for OAP Data Analysis (SODA) package.")
     print ("    UIOPS     Process University of Illinois OAP Processing Software (UOIPS) package.")
+    print ("    COYOTE    IDL graphics package.")
     print ("  PREFERENCES:")
     print ("    nobinary  Do not install binary packages.")
     print ("    notesting Do not test for support packages.")
@@ -460,7 +422,7 @@ def help_message():
     print ("    SOURCEFORGE_USER Checks out Sourceforge git repositories using defiend username.")
 
 # Turn off all packages by default.
-adpaa,adtae,drilsdown,eufar,lrose,miepython,samac,soda,uiops = all_packages('Off')
+adpaa,adtae,drilsdown,eufar,lrose,samac,soda,uiops,coyote = all_packages('Off')
 
 # Check for - command line options, for example -h.
 for param in sys.argv:
@@ -472,16 +434,16 @@ for param in sys.argv:
         binary = 0
         # If no parameter options, install all packages.
         if (len(sys.argv) < 3):
-            adpaa,adtae,drilsdown,eufar,lrose,miepython,samac,soda,uiops = all_packages('On')
+            adpaa,adtae,drilsdown,eufar,lrose,samac,soda,uiops = all_packages('On')
     if param.startswith('-s'):
         source = 1
         # If no parameter options, install all packages.
         if (len(sys.argv) < 3):
-            adpaa,adtae,drilsdown,eufar,lrose,miepython,samac,soda,uiops = all_packages('On')
+            adpaa,adtae,drilsdown,eufar,lrose,samac,soda,uiops,coyote = all_packages('On')
     else:
         # If no parameter options, install all packages.
         if (len(sys.argv) < 2):
-            adpaa,adtae,drilsdown,eufar,lrose,miepython,samac,soda,uiops = all_packages('On')
+            adpaa,adtae,drilsdown,eufar,lrose,samac,soda,uiops,coyote = all_packages('On')
 
     if param.startswith('-t'):
         testing_only  = 1
@@ -512,10 +474,6 @@ for param in sys.argv:
         lrose = 1
     if (param == 'lrose'):
         lrose = 1
-    if (param == 'MIEPYTHON'):
-        miepython = 1
-    if (param == 'miepython'):
-        miepython = 1
     if (param == 'SAMAC'):
         samac = 1
     if (param == 'samac'):
@@ -532,7 +490,12 @@ for param in sys.argv:
         uiops = 1
     if (param == 'uiops'):
         uiops = 1
-
+    if (param == 'COYOTE'):
+        coyote = 1
+    if (param == 'coyote'):
+        coyote = 1
+    if (param == 'Coyote'):
+        coyote = 1
 # Check for list of long name options.
 for param in sys.argv:
     if (param == 'nobinary'):
@@ -540,123 +503,151 @@ for param in sys.argv:
     if (param == 'notesting'):
         testing = 0
 
+
 # Import package with existing checking.
 print ("Importing Modules:")
-import importlib
+import imp
 print ("  The imp module imported.")
 
-git_spec = importlib.util.find_spec("git")
-if (git_spec != 'None'):
-    import git
-    print ("  The git module imported.")
-else:
+try:
+    imp.find_module('git')
+except ImportError:
     print ("**  WARNING:  The python 'git' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
     print ("**    Fedora - sudo dnf install python3-GitPython")
     print ("**    Ubuntu - sudo apt install python3-git")
-
-numpy_spec = importlib.util.find_spec("git")
-if (numpy_spec != 'None'):
-    import numpy
+    pass
 else:
-    print ("  The numpy module imported.")
+    import git
+    print ("  The git module imported.")
+
+try:
+    imp.find_module('numpy')
+except ImportError:
     print ("**  WARNING:  The python 'numpy' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
     print ("**    Redhat - sudo yum install python3-numpy")
     print ("**    Fedora - sudo dnf install python3-GitPython")
     print ("**    Ubuntu - sudo apt install python3-git")
-
-os_spec = importlib.util.find_spec("os")
-if (os_spec != 'None'):
-    import os
-    print ("  The os module imported.")
+    pass
 else:
+    import numpy
+    print ("  The numpy module imported.")
+
+try:
+    imp.find_module('os')
+    import os
+except ImportError:
     print ("**  WARNING:  The python 'os' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
     print ("**    Redhat - sudo yum install python-libs")
     print ("**    Fedora - sudo dnf install python-libs")
+    pass
+else:
+    import os
+    print ("  The os module imported.")
 
 ### PIP required for AOSPY. ###
-pip_spec = importlib.util.find_spec("pip")
-if (pip_spec != 'None'):
+try:
     import pip
-    print ("  The pip module imported.")
-else:
+except ImportError:
     print ("  The python 'pip' module does not exists.")
     print ("  pip only required for AOSPY.")
-
-requests_spec = importlib.util.find_spec("requests")
-if (requests_spec != 'None'):
-    import requests
-    print ("  The requests module imported.")
+    pass
 else:
+    import pip
+    print ("  The pip module imported.")
+
+try:
+    imp.find_module('requests')
+    import requests
+except ImportError:
     print ("**  WARNING:  The python 'requests' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
     print ("**    Redhat - sudo yum install python3-requests")
     print ("**    Fedora - sudo dnf install python3-requests")
     print ("**    Ubuntu - sudo apt install python3-requests")
-
-pysvn_spec = importlib.util.find_spec("pysvn")
-if (pysvn_spec != 'None'):
-    import pysvn
-    print ("  The pysvn module imported.")
+    pass
 else:
+    import requests
+    print ("  The requests module imported.")
+
+try:
+    imp.find_module('svn')
+    import svn
+except ImportError:
     print ("**  WARNING:  The python 'pysvn' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
     print ("**    Redhat - sudo yum install python3-svn")
     print ("**    Fedora - sudo dnf install python3-svn")
     print ("**    Ubuntu - sudo apt install python3-svn")
+    pass
+else:
+    import svn
+    print ("  The svn module imported.")
 
-shutil_spec = importlib.util.find_spec("shutil")
-if (shutil_spec != 'None'):
+try:
+    imp.find_module('shutil')
+except ImportError:
+    print ("**  WARNInG:  The python 'shutil' module does not exists.")
+    pass
+else:
     import shutil
     print ("  The shutil module imported.")
-else:
-    print ("**  WARNInG:  The python 'shutil' module does not exists.")
 
-sys_spec = importlib.util.find_spec("sys")
-if (sys_spec != 'None'):
+try:
+    imp.find_module('sys')
+except ImportError:
+    print ("**  WARNInG:  The python 'sys' module does not exists.")
+    pass
+else:
     import sys 
     print ("  The sys module imported.")
-else:
-    print ("**  WARNInG:  The python 'sys' module does not exists.")
 
-tarfile_spec = importlib.util.find_spec("tarfile")
-if (tarfile_spec != 'None'):
+try:
+    import tarfile
+except ImportError:
+    print ("**  WARNING:  The python 'tarfile' module does not exists.")
+    pass
+else:
     import tarfile
     print ("  The tarfile module imported.")
-else:
-    print ("**  WARNING:  The python 'tarfile' module does not exists.")
 
-urllib3_spec = importlib.util.find_spec("urllib3")
-if (urllib3_spec != 'None'):
+try:
     import urllib3
-    print ("  The urllib3 module imported.")
-else:
+except ImportError:
     print ("**  WARNING:  The python 'urllib3' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
     print ("**     Redhat - sudo yum install python-urllibs3")
     print ("**     Fedora - sudo dnf install python3-urllibs3")
-
-unittest2_spec = importlib.util.find_spec("unittest2")
-if (unittest2_spec != 'None'):
-    import unittest2
-    print ("  The unittest2 module imported.")
+    pass
 else:
+    import urllib3
+    print ("  The urllib3 module imported.")
+
+try:
+    import unittest2
+except ImportError:
     print ("**  WARNING:  The python 'unittest2' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
     print ("**      Redhat - sudo dnf install python3-unittest2")
     print ("**      Fedora - sudo dnf install python3-unittest2")
     print ("**      Ubuntu - sudo apt install python3-unittest2")
-
-wget_spec = importlib.util.find_spec("wget")
-if (wget_spec != 'None'):
-    import wget
-    print ("  The wget module imported.")
+    pass
 else:
+    import unittest2
+    print ("  The unittest2 module imported.")
+
+try:
+    import wget
+except ImportError:
     print ("**  WARNING:  The python 'wget' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
     print ("**      pip install wget")
+    pass
+else:
+    import wget
+    print ("  The wget module imported.")
 
 
 # Exit if only want testing for support programs.
@@ -702,7 +693,7 @@ if (adpaa):
             if not os.path.isdir("ADPAA"):
                 os.mkdir('ADPAA')
             os.chdir('ADPAA')
-            client = pysvn.Client()
+            client = svn.Client()
             svn_username = os.environ.get('SVN_USERNAME')
             sourceforge_user = os.environ.get('SOURCEFORGE_USER')
             if svn_username is None:
@@ -718,7 +709,7 @@ if (adpaa):
             # Updating existing ADPAA repository.
             print ("    Updating existing ADPAA source code from repository.")
             os.chdir('ADPAA')
-            client = pysvn.Client()
+            client = svn.Client()
             client.update('src')
             os.chdir('..')
             print ("    Finished updating ADPAA source code from repository.")
@@ -855,21 +846,6 @@ if (lrose):
         repo.pull()
         print ("    Finished with NetCDF.")
 
-if (miepython):
-    # Create main MiePython directory.
-    print ("  Working on miepython).")
-    if not os.path.isdir("miepython"):
-        print ("    Cloning miepython repository.")
-        repo = git.Repo.clone_from(
-            'https://github.com/scottprahl/miepython.git',
-            'miepython',
-            progress=Progress())
-    else:
-        # Update the existing repository.
-        print ("    Updating miepython repository.")
-        repo = git.cmd.Git('miepython')
-        repo.pull()
-        print ("    Finished with miepython.")
 
 ### Software for Airborne Measurements of Aerosol and Clouds (SAMAC) ###
 if (samac):
@@ -935,3 +911,23 @@ if (uiops):
         repo = git.cmd.Git('UIOPS')
         repo.pull()
         print ("    Finished updating UIOPS.")
+
+
+### Process Coyote (IDL) Graphics Package ###
+if (coyote):
+    # Create main Coyote Directory.
+    print ("  Coyote (IDL) Graphics Package.")
+    if not os.path.isdir("Coyote"):
+        print ("    Cloning Coyote repository.")
+        repo = git.Repo.clone_from(
+            "https://github.com/idl-coyote/coyote",
+            "Coyote",
+        progress=Progress())
+        print ("    Finished cloning Coyote repository.")
+    else:
+        # Update the exisiting repository.
+        print("   Updating Coyote repository.")
+        repo = git.cmd.Git("Coyote")
+        repo.pull()
+        print ("   Finished updating Coyote")
+
