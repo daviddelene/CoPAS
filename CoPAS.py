@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3
 
 """
 NAME:
@@ -101,6 +101,8 @@ MODIFICATIONS:
     Changed to using python3.6 instead of just python3.
   Christian Nairy <christian.nairy@und.edu> - 2023/03/10
     Added Coyote package installation routine.
+  David Delene <delene@aero.und.edu> - 2023/03/24
+    Change from using python3.6 to python3  
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
