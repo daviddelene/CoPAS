@@ -103,6 +103,8 @@ MODIFICATIONS:
     Added Coyote package installation routine.
   David Delene <delene@aero.und.edu> - 2023/03/24
     Change from using python3.6 to python3  
+  David Delene <delene@aero.und.edu> - 2023/07/18
+    Updated from svn to pysvn Python3 usage.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
