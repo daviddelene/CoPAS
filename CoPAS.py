@@ -105,6 +105,8 @@ MODIFICATIONS:
     Change from using python3.6 to python3  
   David Delene <delene@aero.und.edu> - 2023/07/18
     Updated from svn to pysvn Python3 usage.
+  David Delene <delene@aero.und.edu> - 2025/10/09
+    Really updated all from svn to pysvn Python3 usage.
 
 REFERENCES:
   Airborne Data Processing and Analysis (ADPAA)
@@ -577,8 +579,8 @@ else:
     print ("  The requests module imported.")
 
 try:
-    imp.find_module('svn')
-    import svn
+    imp.find_module('pysvn')
+    import pysvn
 except ImportError:
     print ("**  WARNING:  The python 'pysvn' module does not exists.")
     print ("**    Please install (see suggestion below) and execute again.")
@@ -587,8 +589,8 @@ except ImportError:
     print ("**    Ubuntu - sudo apt install python3-svn")
     pass
 else:
-    import svn
-    print ("  The svn module imported.")
+    import pysvn
+    print ("  The pysvn module imported.")
 
 try:
     imp.find_module('shutil')
@@ -697,7 +699,7 @@ if (adpaa):
             if not os.path.isdir("ADPAA"):
                 os.mkdir('ADPAA')
             os.chdir('ADPAA')
-            client = svn.Client()
+            client = pysvn.Client()
             svn_username = os.environ.get('SVN_USERNAME')
             sourceforge_user = os.environ.get('SOURCEFORGE_USER')
             if svn_username is None:
@@ -713,7 +715,7 @@ if (adpaa):
             # Updating existing ADPAA repository.
             print ("    Updating existing ADPAA source code from repository.")
             os.chdir('ADPAA')
-            client = svn.Client()
+            client = pysvn.Client()
             client.update('src')
             os.chdir('..')
             print ("    Finished updating ADPAA source code from repository.")
